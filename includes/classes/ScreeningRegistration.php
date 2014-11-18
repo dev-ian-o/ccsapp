@@ -1,0 +1,174 @@
+
+<?php
+
+class ScreeningRegistration{
+	public static function connect(){
+		$config = array(
+			'host' => 'localhost',
+			'dbname' => 'ccsdb',
+			'username' => 'root',
+			'password' => ''
+		);
+		$conn = new PDO('mysql:host='.$config['host'].';dbname='.$config['dbname'],$config['username'],$config['password']);
+
+		return $conn;
+
+	}
+
+	public static function add($row){
+
+		$conn = static::connect();
+
+		$stmt = $conn->prepare("INSERT INTO `tbl_contestant`(`student_no`, `competition_id`, `lastname`, `firstname`, `gender`, `year`, `section`, `course`, `image`, `created_at`) 
+					VALUES(:student_no, :competition_id, :lastname, :firstname, :gender, :year, :section, :course, :image, now())");
+
+		$stmt->execute(array(
+			"student_no" => $row['student_no'],
+			"competition_id" => $row['competition_id'],
+			"lastname" => $row['lastname'],
+			"firstname" => $row['firstname'],
+			"gender" => $row['gender'],
+			"year" => $row['year'],
+			"section" => $row['section'],
+			"course" => $row['course'],
+			"image" => $row['image'],
+		));
+		
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+
+	}
+
+	public static function edit($id,$row){
+		//extend the row array to fetch
+		$conn = static::connect();
+
+		$stmt = $conn->prepare("UPDATE tbl_contestant 
+			SET student_no = :student_no,
+				competition_id = :competition_id,
+				lastname = :lastname,
+				firstname = :firstname,
+				gender = :gender,
+				year = :year,
+				section = :section,
+				course = :course,
+				image = :image,
+				updated_at = now()
+			WHERE student_no = :id");
+
+		$stmt->execute(array(
+			"student_no" => $row['student_no'],
+			"competition_id" => $row['competition_id'],
+			"lastname" => $row['lastname'],
+			"firstname" => $row['firstname'],
+			"gender" => $row['gender'],
+			"year" => $row['year'],
+			"section" => $row['section'],
+			"course" => $row['course'],
+			"image" => $row['image'],
+			"id" => $id,
+		));
+		
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+	}
+
+	public static function delete($id){
+
+		$conn = static::connect();
+
+		$stmt = $conn->prepare("UPDATE tbl_contestant 
+			SET deleted_at = now()
+			WHERE contestant_id = :id");
+
+		$stmt->execute(array(
+			"id" => $id,
+		));
+		
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+	
+	}
+
+	public static function fetch(){	
+
+		$conn = static::connect();
+
+		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE deleted_at IS NULL");
+
+		$stmt->execute(array(
+
+		));
+		
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+
+		return json_encode($row);
+	}
+
+	public static function findById($id){
+
+		$conn = static::connect();
+
+		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE contestant_id = :id AND deleted_at IS NULL");
+
+		$stmt->execute(array(
+			"id" => $id
+		));
+		
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+
+		return json_encode($row);
+			
+	}
+
+	public static function findByNext($row){
+		$val = $row;
+		$conn = static::connect();
+
+		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE gender = :gender AND competition_id =:competition_id AND deleted_at IS NULL");
+
+		$stmt->execute(array(
+			"competition_id" => $row['competition_id'],
+			"gender" => $row['gender'],
+		));
+		
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+
+		foreach ($row as $key => $value) {
+			foreach ($value as $key_val => $value_val) {
+				
+				if($key_val === "contestant_id"){
+					if($value_val === $val['contestant_id']){
+						if(array_key_exists(++$key, $row)) return json_encode($row[$key]);
+						break;
+					}
+				}
+			}
+		}
+			
+	}
+
+
+	public static function findByPrev($row){
+		$val = $row;
+		$conn = static::connect();
+
+		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE gender = :gender AND competition_id =:competition_id AND deleted_at IS NULL");
+
+		$stmt->execute(array(
+			"competition_id" => $row['competition_id'],
+			"gender" => $row['gender'],
+		));
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+
+		foreach ($row as $key => $value) {
+			foreach ($value as $key_val => $value_val) {
+				
+				if($key_val === "contestant_id"){
+					if($value_val === $val['contestant_id']){
+						if(array_key_exists(--$key, $row)) return json_encode($row[$key]);
+						break;
+					}
+				}
+			}
+		}
+			
+	}
+}
