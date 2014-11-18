@@ -53,6 +53,7 @@
       <div style="height: 30px;"><input type="checkbox" class="switch-gender" name="gender" checked value="Mr" data-on-text="Mr" data-off-text="Ms"></div>
       <div class="center mr-div">
           <img src="../images/male_default.svg" alt="..." class="img-circle img-thumbnail">
+            <div class="male-no" style="position: absolute;font-size: 40px;right: 20px;">#<span>1</span></div>
             <div>
               <button type="button" class="btn btn-primary mT10 btn-sm names">
                 <?= ucwords($contestants[0]->lastname) .', '. ucwords($contestants[0]->firstname); ?>  <br>
@@ -89,6 +90,7 @@
       </div>
       <div class="center ms-div hide">
           <img src="../images/male_default.svg" alt="..." class="img-circle img-thumbnail">
+            <div class="female-no" style="position: absolute;font-size: 40px;right: 20px;">#<span>1</span></div>
             <div>
               <button type="button" class="btn btn-primary mT10 btn-sm names">
                 <?= ucwords($contestants[1]->lastname) .', '. ucwords($contestants[1]->firstname); ?>  <br>
@@ -181,6 +183,7 @@
           $maleForm.find('[name=gender]').val(results.gender);
           $maleForm.find('[name=competition_id]').val(results.competition_id);
           $maleForm.find('[name=contestant_id]').val(results.contestant_id);
+          $('.mr-div').find('.male-no').find('span').html(results.contestant_no);
           $maleForm.find('[name=student_no]').val(results.student_no); 
           $maleForm.find('[name=student_no]').val(results.student_no); 
           $('.mr-div').find('.names').html(results.lastname+', '+results.firstname+'<br>'+results.year+'-'+results.section);
@@ -228,6 +231,7 @@
           $maleForm.find('[name=gender]').val(results.gender);
           $maleForm.find('[name=competition_id]').val(results.competition_id);
           $maleForm.find('[name=contestant_id]').val(results.contestant_id);
+          $('.mr-div').find('.male-no').find('span').html(results.contestant_no);
           $maleForm.find('[name=student_no]').val(results.student_no); 
 
           $('.mr-div').find('.names').html(results.lastname+', '+results.firstname+'<br>'+results.year+'-'+results.section);
@@ -274,6 +278,7 @@
           $femaleForm.find('[name=gender]').val(results.gender);
           $femaleForm.find('[name=competition_id]').val(results.competition_id);
           $femaleForm.find('[name=contestant_id]').val(results.contestant_id);
+          $('.ms-div').find('.female-no').find('span').html(results.contestant_no);
           $femaleForm.find('[name=student_no]').val(results.student_no); 
           
           $('.ms-div').find('.names').html(results.lastname+', '+results.firstname+'<br>'+results.year+'-'+results.section);
@@ -319,6 +324,7 @@
           $femaleForm.find('[name=gender]').val(results.gender);
           $femaleForm.find('[name=competition_id]').val(results.competition_id);
           $femaleForm.find('[name=contestant_id]').val(results.contestant_id);
+          $('.ms-div').find('.female-no').find('span').html(results.contestant_no);
           $femaleForm.find('[name=student_no]').val(results.student_no); 
           
           $('.ms-div').find('.names').html(results.lastname+', '+results.firstname+'<br>'+results.year+'-'+results.section);

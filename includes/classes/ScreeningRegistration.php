@@ -19,8 +19,8 @@ class ScreeningRegistration{
 
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("INSERT INTO `tbl_contestant`(`student_no`, `competition_id`, `lastname`, `firstname`, `gender`, `year`, `section`, `course`, `image`, `created_at`) 
-					VALUES(:student_no, :competition_id, :lastname, :firstname, :gender, :year, :section, :course, :image, now())");
+		$stmt = $conn->prepare("INSERT INTO `tbl_contestant`(`student_no`, `competition_id`, `lastname`, `firstname`, `gender`, `year`, `section`, `course`, `image`, `created_at`, `contestant_no`) 
+					VALUES(:student_no, :competition_id, :lastname, :firstname, :gender, :year, :section, :course, :image, now(), :contestant_no)");
 
 		$stmt->execute(array(
 			"student_no" => $row['student_no'],
@@ -32,6 +32,7 @@ class ScreeningRegistration{
 			"section" => $row['section'],
 			"course" => $row['course'],
 			"image" => $row['image'],
+			"contestant_no" => $row['contestant_no'],
 		));
 		
 		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
@@ -171,4 +172,26 @@ class ScreeningRegistration{
 		}
 			
 	}
+
+	public static function countByGender($row){
+		$val = $row;
+		$conn = static::connect();
+
+		$stmt = $conn->prepare('SELECT count(*) as number FROM `tbl_contestant` WHERE competition_id=:competition_id AND gender =:gender AND deleted_at IS NULL');
+
+		$stmt->execute(array(
+			"competition_id" => $row['competition_id'],
+			"gender" => $row['gender'],
+		));
+
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+
+		return $row;
+	}
+
+
+
+
+
+
 }
