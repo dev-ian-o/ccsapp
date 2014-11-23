@@ -92,7 +92,7 @@ class ScreeningRegistration{
 
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE deleted_at IS NULL");
+		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE deleted_at IS NULL ORDER BY contestant_no ASC");
 
 		$stmt->execute(array(
 
@@ -123,7 +123,7 @@ class ScreeningRegistration{
 		$val = $row;
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE gender = :gender AND competition_id =:competition_id AND deleted_at IS NULL");
+		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE gender = :gender AND competition_id =:competition_id AND deleted_at IS NULL ORDER BY contestant_no ASC");
 
 		$stmt->execute(array(
 			"competition_id" => $row['competition_id'],
@@ -151,7 +151,7 @@ class ScreeningRegistration{
 		$val = $row;
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE gender = :gender AND competition_id =:competition_id AND deleted_at IS NULL");
+		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE gender = :gender AND competition_id =:competition_id AND deleted_at IS NULL ORDER BY contestant_no ASC");
 
 		$stmt->execute(array(
 			"competition_id" => $row['competition_id'],
@@ -177,7 +177,7 @@ class ScreeningRegistration{
 		$val = $row;
 		$conn = static::connect();
 
-		$stmt = $conn->prepare('SELECT count(*) as number FROM `tbl_contestant` WHERE competition_id=:competition_id AND gender =:gender AND deleted_at IS NULL');
+		$stmt = $conn->prepare('SELECT count(*) as number FROM `tbl_contestant` WHERE competition_id=:competition_id AND gender =:gender AND deleted_at IS NULL ORDER BY contestant_no ASC');
 
 		$stmt->execute(array(
 			"competition_id" => $row['competition_id'],
