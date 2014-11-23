@@ -79,6 +79,10 @@
 		$('#table-competition').dataTable();
 	});
 </script>
+
+		<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-small btn-inverse">
+			<i class="icon-double-angle-up icon-only bigger-110"></i>
+		</a>
 <?php include 'modal-competition/add.php'; ?>
 <?php include 'modal-competition/edit.php'; ?>
 <?php include 'modal-competition/delete.php'; ?>

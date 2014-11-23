@@ -39,7 +39,7 @@ class ScreeningRegistration{
 
 	}
 
-	public static function edit($id,$row){
+	public static function edit($row){
 		//extend the row array to fetch
 		$conn = static::connect();
 
@@ -53,12 +53,15 @@ class ScreeningRegistration{
 				section = :section,
 				course = :course,
 				image = :image,
+				contestant_no = :contestant_no,
 				updated_at = now()
-			WHERE student_no = :id");
+			WHERE contestant_id = :contestant_id");
 
 		$stmt->execute(array(
 			"student_no" => $row['student_no'],
 			"competition_id" => $row['competition_id'],
+			"contestant_id" => $row['contestant_id'],
+			"contestant_no" => $row['contestant_no'],
 			"lastname" => $row['lastname'],
 			"firstname" => $row['firstname'],
 			"gender" => $row['gender'],
@@ -66,7 +69,6 @@ class ScreeningRegistration{
 			"section" => $row['section'],
 			"course" => $row['course'],
 			"image" => $row['image'],
-			"id" => $id,
 		));
 		
 		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
