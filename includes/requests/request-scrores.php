@@ -69,32 +69,4 @@
 	}
 
 	
-	
-	if(isset($_POST['form']))
-		if($_POST['form'] === "male_form")
-		{
-			$_POST["score"] = $_POST["criteria_name"];
-			if(json_decode(Scores::findByRows($_POST))){				
-				Scores::edit($_POST);
-				print_r(json_encode(array("status"=>"edit")));
-			}else{
-				Scores::add($_POST);
-				print_r(json_encode(array("status"=>"add")));
-			}
-
-		}
-
-
-	if(isset($_POST['form']))
-		if($_POST['form'] === "female_form")
-		{
-			$_POST["score"] = $_POST["criteria_name"];
-			if(json_decode(Scores::findByRows($_POST))){				
-				Scores::edit($_POST);
-				print_r(json_encode(array("status"=>"edit")));
-			}else{
-				Scores::add($_POST);
-				print_r(json_encode(array("status"=>"add")));
-			}
-		}
 ?>

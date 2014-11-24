@@ -152,15 +152,19 @@
     $femaleForm = $('.female-form');
     var nextValMale = function(){
       arr = {};
-      arr["gender"] = $maleForm.find('[name=gender]').val();
-      arr["competition_id"] = $maleForm.find('[name=competition_id]').val();
-      arr["contestant_id"] = $maleForm.find('[name=contestant_id]').val();
-      arr["student_no"] = $maleForm.find('[name=student_no]').val();      
-      arr["judges_id"] = $maleForm.find('[name=judges_id]').val();      
-      arr["next"] = "next";      
+      // arr["gender"] = $maleForm.find('[name=gender]').val();
+      // arr["competition_id"] = $maleForm.find('[name=competition_id]').val();
+      // arr["contestant_id"] = $maleForm.find('[name=contestant_id]').val();
+      // arr["student_no"] = $maleForm.find('[name=student_no]').val();      
+      // arr["judges_id"] = $maleForm.find('[name=judges_id]').val();      
+      // arr["next"] = "next";      
+
+      $($maleForm.find('[name]')).each(function() {
+        arr[this.name] = this.value;
+      })
 
 
-        $(".loader").fadeIn('slow');
+      $(".loader").fadeIn('slow');
       $.ajax({
         url: '../includes/requests/request-scrores.php',
         type: 'POST',

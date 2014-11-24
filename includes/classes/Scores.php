@@ -81,7 +81,7 @@ class Scores{
 		$conn = static::connect();
 
 		// $stmt = $conn->prepare("SELECT * FROM tbl_scores WHERE deleted_at != NULL");
-		$stmt = $conn->prepare("SELECT * FROM tbl_scores WHERE deleted_at IS NULL");
+		$stmt = $conn->prepare("SELECT * FROM  `tbl_scores`");
 
 		$stmt->execute(array(
 

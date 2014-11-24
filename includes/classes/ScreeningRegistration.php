@@ -137,6 +137,23 @@ class ScreeningRegistration{
 			
 	}
 
+	public static function findByCompetitionIdWithGender($id,$gender){
+
+		$conn = static::connect();
+
+		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE competition_id = :id AND gender LIKE :gender AND deleted_at IS NULL ORDER BY contestant_no ASC");
+
+		$stmt->execute(array(
+			"id" => $id,
+			"gender" => $gender,
+		));
+		
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+
+		return json_encode($row);
+			
+	}
+
 	public static function findByNext($row){
 		$val = $row;
 		$conn = static::connect();

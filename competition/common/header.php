@@ -102,7 +102,7 @@
           box-shadow: 0px 0px 1px #3c6d59;
         }
 
-        #talent-input, #presentation-input, #talent-input2, #presentation-input2{
+        input[data-criteria], #talent-input, #presentation-input, #talent-input2, #presentation-input2{
           text-align: center;
           font-family: "Quantico", sans-serif;
           font-size: 14px;
