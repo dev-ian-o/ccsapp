@@ -99,4 +99,19 @@ class Criteria{
 		return json_encode($row);
 	}
 
+	public static function findByCompetitionId($id){
+
+		$conn = static::connect();
+
+		$stmt = $conn->prepare("SELECT * FROM tbl_criteria WHERE competition_id = :id AND deleted_at IS NULL");
+
+		$stmt->execute(array(
+			"id" => $id
+		));
+		
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+
+		return json_encode($row);
+	}
+
 }

@@ -7,7 +7,17 @@
       </div>
       <form method="post">
       <div class="modal-body">
-          <input type="hidden" name="competition_id" value="2">
+          <div class="control-group">
+            <label class="control-label" for="competition_id">Competition Name</label>
+
+            <div class="controls">
+              <select class="form-control" name="competition_id">
+                  <?php foreach ($rowCompetition as $key => $value):?>
+                  <option <?php if($competition_id == $value->competition_id) echo "selected";?> value="<?= $value->competition_id?>"><?= $value->competition_description?></option>                 
+                  <?php endforeach;?>
+                </select>
+            </div>
+          </div>
           <input type="hidden" name="contestant_id" value="1">
           <input type="hidden" name="image" value="1">
           <div class="control-group">

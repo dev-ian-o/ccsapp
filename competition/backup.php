@@ -69,15 +69,15 @@
             <input type="hidden" name="scores_id" value="">
             <input type="hidden" name="judges_id" value="<?= $_SESSION['judges_id'];?>">
             <input type="hidden" name="form" value="male_form">
-            BRAIN:(30%)
+            BRAIN:(30%)<input id="talent-range" type="range" value="<?= $scoreMale->brain;?>" min="1.00" max="30.00" step="0.10" name='criteria_name[brain]'/>
             <input type="text" id="talent-input" value="<?= $scoreMale->brain;?>" onkeydown="return isNumberKey(event)" required/>
             <br>
-            BEAUTY:(70%)
+            BEAUTY:(70%)<input id="presentation-range" type="range" value="<?= $scoreMale->beauty;?>" min="1.00" max="70.00" step="0.10" name='criteria_name[beauty]' />
             <input type="text" id="presentation-input" value="<?= $scoreMale->beauty;?>" onkeydown="return isNumberKey(event)" required>
             <br>
             <span class="lead">TOTAL SCORE: </span>
             <span class="label label-success total-score">50%</span>
-            <input id="total" type="hidden" value="0" name="total_score" class="mT10"><br><br>
+            <input id="total" type="hidden" value="50" name="total_score" class="mT10"><br><br>
             <input type="submit" name="submit" class="btn btn-danger btn-sm">
           </form>
 
@@ -105,10 +105,10 @@
             <input type="hidden" name="contestant_id" value="<?= $contestants[1]->contestant_id; ?>">
             <input type="hidden" name="judges_id" value="<?= $_SESSION['judges_id'];?>">
             <input type="hidden" name="form" value="female_form">
-            BRAIN:(30%)
+            BRAIN:(30%)<input id="talent-range2" type="range" value="<?= $scoreFemale->brain;?>" min="1.00" max="30.00" step="0.10" name='criteria_name[brain]' />
             <input type="text" id="talent-input2" value="<?= $scoreFemale->brain;?>" onkeydown="return isNumberKey(event)" required/>
             <br>
-            BEAUTY:(70%)
+            BEAUTY:(70%)<input id="presentation-range2" type="range" value="<?= $scoreFemale->beauty;?>" min="1.00" max="70.00" step="0.10" name='criteria_name[beauty]' />
             <input type="text" id="presentation-input2" value="<?= $scoreFemale->beauty;?>" onkeydown="return isNumberKey(event)" required>
             <br>
             <span class="lead">TOTAL SCORE: </span>

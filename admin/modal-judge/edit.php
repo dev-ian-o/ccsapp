@@ -9,9 +9,20 @@
       <div class="modal-body">
         <form method="post">
 
-          <input type="hidden" name="competition_id" value="">
           <input type="hidden" name="criteria_id" value="">
           <input type="hidden" name="judges_id" value="">
+          
+          <div class="control-group">
+            <label class="control-label" for="competition_id">Competition Name</label>
+
+            <div class="controls">
+              <select class="form-control" name="competition_id">
+                  <?php foreach ($rowCompetition as $key => $value):?>
+                  <option <?php if($competition_id == $value->competition_id) echo "selected";?> value="<?= $value->competition_id?>"><?= $value->competition_description?></option>                 
+                  <?php endforeach;?>
+                </select>
+            </div>
+          </div>
           <div class="control-group">
             <label class="control-label" for="name">Judges Name</label>
 

@@ -121,6 +121,22 @@ class ScreeningRegistration{
 			
 	}
 
+	public static function findByCompetitionId($id){
+
+		$conn = static::connect();
+
+		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE competition_id = :id AND deleted_at IS NULL ORDER BY contestant_no ASC");
+
+		$stmt->execute(array(
+			"id" => $id
+		));
+		
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+
+		return json_encode($row);
+			
+	}
+
 	public static function findByNext($row){
 		$val = $row;
 		$conn = static::connect();

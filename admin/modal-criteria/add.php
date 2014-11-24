@@ -14,7 +14,7 @@
             <div class="controls">
               <select class="form-control" name="competition_id">
                   <?php foreach ($rowCompetition as $key => $value):?>
-                  <option value="<?= $value->competition_id?>"><?= $value->competition_description?></option>                 
+                  <option <?php if($competition_id == $value->competition_id) echo "selected";?> value="<?= $value->competition_id?>"><?= $value->competition_description?></option>                 
                   <?php endforeach;?>
                 </select>
             </div>
