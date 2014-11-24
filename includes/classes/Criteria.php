@@ -32,7 +32,7 @@ class Criteria{
 
 	}
 
-	public static function edit($id,$row){
+	public static function edit($row){
 		//extend the row array to fetch
 		$conn = static::connect();
 
@@ -41,13 +41,13 @@ class Criteria{
 				criteria_name =:criteria_name,
 				percentage =:percentage,
 				updated_at = now()
-			WHERE criteria_id = :id");
+			WHERE criteria_id = :criteria_id");
 
 		$stmt->execute(array(
 			"competition_id" => $row['competition_id'],
 			"criteria_name" => $row['criteria_name'],
 			"percentage" => $row['percentage'],
-			"id" => $id,
+			"criteria_id" => $row['criteria_id'],
 		));
 		
 		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
@@ -100,5 +100,3 @@ class Criteria{
 	}
 
 }
-
-print_r(Criteria::findById(1,array("competition_id"=>"1", "criteria_name" => "beautysss" ,"percentage" => "100")));

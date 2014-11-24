@@ -7,22 +7,36 @@
       </div>
       <div class="modal-body">
         <form method="post">
-          <input type="hidden" name="competition_id" value="<?= $competition_id; ?>">
+
           <div class="control-group">
-            <label class="control-label" for="competition_name">Competition Name</label>
+            <label class="control-label" for="competition_id">Competition Name</label>
 
             <div class="controls">
-              <input class="span8" type="text" name="competition_name" id="competition_name" placeholder="Competition Name">
+              <select class="form-control" name="competition_id">
+                  <?php foreach ($rowCompetition as $key => $value):?>
+                  <option value="<?= $value->competition_id?>"><?= $value->competition_description?></option>                 
+                  <?php endforeach;?>
+                </select>
+            </div>
+          </div>
+                
+
+          <div class="control-group">
+            <label class="control-label" for="criteria_name">Criteria Name</label>
+
+            <div class="controls">
+              <input class="span5" type="text" name="criteria_name" id="criteria_name" placeholder="Criteria Name">
             </div>
           </div>
 
           <div class="control-group">
-            <label class="control-label" for="competition_description">Competition Description</label>
+            <label class="control-label" for="percentage">Percentage</label>
 
             <div class="controls">
-              <input class="span8" type="text" name="competition_description" id="competition_description" placeholder="Competition Name">
+              <input class="span5" type="text" name="percentage" id="percentage" placeholder="Percentage">
             </div>
           </div>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -37,7 +51,8 @@
 
 <?php 
   if(isset($_POST['add'])){
-    Competition::add($_POST);
+
+    Criteria::add($_POST);
     echo "<script>alert('Success!');location.href='".$_SERVER['PHP_SELF']."';</script>";
   }
 ?>

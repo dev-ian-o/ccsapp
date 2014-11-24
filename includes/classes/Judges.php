@@ -32,7 +32,7 @@ class Judges{
 
 	}
 
-	public static function edit($id,$row){
+	public static function edit($row){
 		//extend the row array to fetch
 		$conn = static::connect();
 
@@ -40,12 +40,12 @@ class Judges{
 			SET name = :name,
 				competition_id = :competition_id,
 				updated_at = now()
-			WHERE judges_id = :id");
+			WHERE judges_id = :judges_id");
 
 		$stmt->execute(array(
 			"name" => $row['name'],
 			"competition_id" => $row['competition_id'],
-			"id" => $id,
+			"judges_id" => $row["judges_id"],
 		));
 		
 		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		

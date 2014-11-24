@@ -2,38 +2,33 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <a href="#" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
         <h4 class="modal-title" id="myModalLabel">DELETE</h4>  
       </div>
       <div class="modal-body">
-        <form method="post" >
-          <input type="hidden" name="competition_id" value="<?= $competition_id; ?>">
+        <form method="post">
+
+          <input type="hidden" name="competition_id" value="">
+          <input type="hidden" name="criteria_id" value="">
+          <input type="hidden" name="judges_id" value="1">
           <div class="control-group">
-            <label class="control-label" for="competition_name">Competition Name</label>
+            <label class="control-label" for="name">Criteria Name</label>
 
             <div class="controls">
-              <input class="span8" type="text" name="competition_name" id="competition_name" placeholder="Competition Name" disabled="">
+              <input class="span5" type="text" name="name" id="name" placeholder="Criteria Name" disabled="">
             </div>
           </div>
 
-          <div class="control-group">
-            <label class="control-label" for="competition_description">Competition Description</label>
-
-            <div class="controls">
-              <input class="span8" type="text" name="competition_description" id="competition_description" placeholder="Competition Name" disabled="">
-            </div>
-          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <input type="submit" name="delete" class="btn btn-primary" value="DELETE">
+        <input type="submit" name="delete" class="btn btn-primary" value="Delete">
 
           </form>
       </div>
     </div>
   </div>
 </div>
-
 
 
 <script type="text/javascript">
@@ -51,7 +46,7 @@
 
 <?php 
   if(isset($_POST['delete'])){
-    Competition::delete($_POST['competition_id']);
+    Judges::delete($_POST['judges_id']);
     echo "<script>alert('Success!');location.href='".$_SERVER['PHP_SELF']."';</script>";
   }
 ?>
