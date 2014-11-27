@@ -1,3 +1,4 @@
+<?php if(isset($_GET['let-me-in'])):?>
 <link href="../lib/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
 
 <?php include('common/header.php');?>
@@ -421,3 +422,4 @@
 
 </script>
 
+<?php endif;?>

@@ -20,9 +20,9 @@
 
 <?php 
   if(isset($_POST['submit'])){
-    $arr = $_POST;
-    Judges::add($arr);
-    echo "<script> alert('Successfully added!');</script>";
+    // $arr = $_POST;
+    // Judges::add($arr);
+    // echo "<script> alert('Successfully added!');</script>";
 
   }
 ?>

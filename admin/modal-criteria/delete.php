@@ -40,10 +40,10 @@
 
 
 <script type="text/javascript">
-  $(function() {
+  $(document).on('ready change input click',function() {
     $('.action-buttons').find('.delete').on('click', function(){
         console.log(this);
-        $el = $(this.parentElement.parentElement).find("[name]");
+        $('#table-competition').dataTable(); $el = $(this.parentElement.parentElement).find("[name]");
         $($el).each(function() {
            $('.modal-delete').find('[name='+this.name+']').val(this.value);
         });

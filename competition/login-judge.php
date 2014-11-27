@@ -42,6 +42,7 @@
       session_start();
       $_SESSION['judges_id'] = $judge[0]->judges_id;
       $_SESSION['competition_id'] = $judge[0]->competition_id;
+      $_SESSION['judge_name'] = $judge[0]->name;
       if($judge[0]->judges_id)
         echo "<script>location.href = 'new.php';</script>";
     }

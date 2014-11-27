@@ -22,10 +22,10 @@
 
 <?php 
   if(isset($_POST['submit'])){
-    $arr = $_POST;
+    // $arr = $_POST;
     
-    Competition::add($arr);
-    echo "<script> alert('Successfully added!');</script>";
+    // Competition::add($arr);
+    // echo "<script> alert('Successfully added!');</script>";
 
   }
 ?>

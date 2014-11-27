@@ -46,7 +46,7 @@
 
 <?php 
   if(isset($_POST['delete'])){
-    Judges::delete($_POST['judges_id']);
+    Images::delete($_POST['judges_id']);
     echo "<script>alert('Success!');location.href='".$_SERVER['PHP_SELF']."';</script>";
   }
 ?>

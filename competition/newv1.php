@@ -31,7 +31,7 @@ if($rowScoresFemale) $scoresFemale = json_decode($rowScoresMale[0]->score);
         <span class="pull-right">JUDGE: <?= $_SESSION['judge_name'];?></span>
       </div>
       <div class="center mr-div">
-          <img style="height: 175px;"image-contestant src="<?php if($contestantsMale[0]->image == '1') echo '../images/male_default.svg'; else echo "../images/".$contestantsMale[0]->image;?>" alt="..." class="img-circle img-thumbnail">
+          <img src="<?php if($contestantsMale[0]->image == '1') echo '../images/male_default.svg'; else echo $contestantsMale[0]->image;?>" alt="..." class="img-circle img-thumbnail">
             <!-- <div class="contestant-no" style="position: absolute;font-size: 40px;right: 50px;">#<span><?= $contestantsMale[0]->contestant_no;?></span></div> -->
             <select class="contestant-no-select" style="position: absolute;font-size: 40px;right: 50px;">
                 contestantsMale
@@ -91,9 +91,7 @@ if($rowScoresFemale) $scoresFemale = json_decode($rowScoresMale[0]->score);
           </div>
       </div>
       <div class="center ms-div hide">
-          <!-- <img src="../images/female_default.svg" alt="..." class="img-circle img-thumbnail"> -->
-
-          <img style="height: 175px;" image-contestant src="<?php if($contestantsFemale[0]->image == '1') echo '../images/female_default.svg'; else echo "../images/".$contestantsFemale[0]->image;?>" alt="..." class="img-circle img-thumbnail">
+          <img src="../images/female_default.svg" alt="..." class="img-circle img-thumbnail">
             <!-- <div class="contestant-no" style="position: absolute;font-size: 40px;right: 50px;">#<span><?= $contestantsFemale[0]->contestant_no;?></span></div> -->
             <select class="contestant-no-select" style="position: absolute;font-size: 40px;right: 50px;">
                 
@@ -224,11 +222,12 @@ if($rowScoresFemale) $scoresFemale = json_decode($rowScoresMale[0]->score);
 
       if(state === true){
         console.log('switch MR');
+        $('.mr-div').find('.img-thumbnail').attr('src','../images/male_default.svg')
         $('.mr-div').removeClass('hide');
         $('.ms-div').addClass('hide');
       }else if(state === false){
         console.log('switch MS');
-
+        $('.ms-div').find('.img-thumbnail').attr('src','../images/female_default.svg')
         $('.ms-div').removeClass('hide');
         $('.mr-div').addClass('hide');
 
@@ -259,7 +258,6 @@ if($rowScoresFemale) $scoresFemale = json_decode($rowScoresMale[0]->score);
           $($maleForm).find(".total-score").html(results.total_score+"%");
           $('.mr-div').find('.names').html(results.lastname+', '+results.firstname+'<br>'+results.year+'-'+results.section);
           $('.mr-div').find('.contestant-no-select').val(results.contestant_id);
-          $('.mr-div').find('[image-contestant]').attr('src', "../images/"+results.image);
 
           // console.log(results);
 
@@ -294,8 +292,6 @@ if($rowScoresFemale) $scoresFemale = json_decode($rowScoresMale[0]->score);
           $($femaleForm).find(".total-score").html(results.total_score+"%");
           $('.ms-div').find('.names').html(results.lastname+', '+results.firstname+'<br>'+results.year+'-'+results.section);
           $('.ms-div').find('.contestant-no-select').val(results.contestant_id);
-          $('.ms-div').find('[image-contestant]').attr('src', "../images/"+results.image);
-
           // console.log(results);
 
         },
@@ -459,8 +455,6 @@ if($rowScoresFemale) $scoresFemale = json_decode($rowScoresMale[0]->score);
                 $($maleForm).find(".total-score").html(results.total_score+"%");
                 $('.mr-div').find('.names').html(results.lastname+', '+results.firstname+'<br>'+results.year+'-'+results.section);
                 $('.mr-div').find('.contestant-no-select').val(results.contestant_id);
-                
-                $('.mr-div').find('[image-contestant]').attr('src', "../images/"+results.image);
                 console.log(results);
               },
               complete:function(){
@@ -498,8 +492,6 @@ if($rowScoresFemale) $scoresFemale = json_decode($rowScoresMale[0]->score);
                 $($femaleForm).find(".total-score").html(results.total_score+"%");
                 $('.ms-div').find('.names').html(results.lastname+', '+results.firstname+'<br>'+results.year+'-'+results.section);
                 $('.ms-div').find('.contestant-no-select').val(results.contestant_id);
-
-                $('.ms-div').find('[image-contestant]').attr('src', "../images/"+results.image);
                 console.log(results);
               },
               complete:function(){

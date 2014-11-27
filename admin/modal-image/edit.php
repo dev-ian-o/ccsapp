@@ -5,31 +5,17 @@
         <a href="#" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
         <h4 class="modal-title" id="myModalLabel">EDIT</h4>  
       </div>
-      <form method="post">
+
+      <form action ="<?=$_SERVER['PHP_SELF']?>" method = "post" enctype="multipart/form-data">
       <div class="modal-body">
-        <form method="post">
 
-          <input type="hidden" name="criteria_id" value="">
-          <input type="hidden" name="judges_id" value="">
-          
+          <input type="hidden" name="image_id" value="">
           <div class="control-group">
-            <label class="control-label" for="competition_id">Competition Name</label>
-
-            <div class="controls">
-              <select class="form-control" name="competition_id">
-                  <?php foreach ($rowCompetition as $key => $value):?>
-                  <option <?php if($competition_id == $value->competition_id) echo "selected";?> value="<?= $value->competition_id?>"><?= $value->competition_description?></option>                 
-                  <?php endforeach;?>
-                </select>
-            </div>
+            <label class="control-label" for="competition_id">Image:</label>
+            <!-- <input type="file" name="file"> -->
           </div>
-          <div class="control-group">
-            <label class="control-label" for="name">Judges Name</label>
+                
 
-            <div class="controls">
-              <input class="span5" type="text" name="name" id="name" placeholder="Judges Name">
-            </div>
-          </div>
 
       </div>
       <div class="modal-footer">
@@ -59,8 +45,18 @@
 
 
 <?php 
-  if(isset($_POST['edit'])){
-    Judges::edit($_POST);
-    echo "<script>alert('Success!');location.href='".$_SERVER['PHP_SELF']."';</script>";
+  if(isset($_POST['edit'])){ 
+    
+    $name = $_FILES['file']['name'];
+    $name = time()."_".$name;
+    if ( move_uploaded_file ( $_FILES["file"]["tmp_name"] , 
+         "../images/". $name) ){
+
+        $_POST['image_name'] = $name;
+        Images::edit($_POST);
+        echo "<script>alert('Success!');location.href='".$_SERVER['PHP_SELF']."';</script>";
+    }
+    else echo "<script>alert('Error!');location.href='".$_SERVER['PHP_SELF']."';</script>";
+
   }
 ?>

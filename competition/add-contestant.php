@@ -1,5 +1,6 @@
 <?php include('common/header.php');?>
 <?php include('../includes/classes/ScreeningRegistration.php');?>
+<?php include('../includes/classes/Image.php');?>
 
   <body>
   <div class="container">
@@ -62,13 +63,13 @@
 
 <?php 
   if(isset($_POST['submit'])){
-    $arr = $_POST;
-    $var = ScreeningRegistration::countByGender($arr);
-    $arr['contestant_no'] = $var[0]["number"]+1;
+    // $arr = $_POST;
+    // $var = ScreeningRegistration::countByGender($arr);
+    // $arr['contestant_no'] = $var[0]["number"]+1;
     
 
-    ScreeningRegistration::add($arr);
-    echo "<script> alert('Successfully added!');</script>";
+    // ScreeningRegistration::add($arr);
+    // echo "<script> alert('Successfully added!');</script>";
 
   }
 ?>

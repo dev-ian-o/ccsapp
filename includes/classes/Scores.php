@@ -128,4 +128,22 @@ class Scores{
 	}	
 
 
+	public static function checkWinners($gender){
+
+		$conn = static::connect();
+
+
+		$stmt = $conn->prepare("SELECT contestant_no,b.student_no,lastname,firstname,year,section,course,AVG(a.total_score)
+		 as total FROM tbl_scores a, tbl_contestant b WHERE b.gender = :gender AND a.student_no = b.student_no AND a.competition_id = 1 GROUP BY a.student_no ORDER BY total desc");
+
+		$stmt->execute(array(
+			"gender" => $gender,
+		));
+		
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+
+		return json_encode($row);			
+	}	
+
+
 }
