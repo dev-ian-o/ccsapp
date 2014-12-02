@@ -16,7 +16,7 @@
 	else
 		$competition_id = "1";
 
-	$row = json_decode(Scores::checkWinners($gender,$competition_id));
+	$row = json_decode(Scores::checkTally($gender,$competition_id));
 ?>
 	<body>
 		<?php include 'common/nav.php';?>
@@ -33,7 +33,7 @@
 				<div class="page-content">
 					<div class="page-header position-relative">
 						<h1>
-							Winners
+							Tally
 						</h1>
 					</div><!--/.page-header-->
 
@@ -50,7 +50,7 @@
 									<?php endforeach;?>
 								</select>
 								<div class="table-header clearfix">
-									Winners
+									Tally
 								</div>
 
 								<table id="table-competition" class="table table-striped table-bordered table-hover">
@@ -59,11 +59,13 @@
 											<th>#</th>
 											<th>ID No.</th>
 											<th>Contestant No.</th>
+											<th>Judge Name.</th>
 											<th>Last Name</th>
 											<th>First Name</th>
 											<th>Gender</th>
 											<th>Year</th>
 											<th>Section</th>
+											<th>Scores</th>
 											<th>total</th>
 										</tr>
 									</thead>
@@ -73,13 +75,15 @@
 										<tr>
 											<td><?= $a++; ?></td>
 											<td><?= $value->student_no; ?></td>
+											<td><?= $value->name; ?></td>
 											<td><?= $value->contestant_no; ?></td>
 											<td><?= $value->lastname; ?></td>
 											<td><?= $value->firstname; ?></td>
 											<td><?= $gender; ?></td>
 											<td><?= $value->year; ?></td>
 											<td><?= $value->section; ?></td>
-											<td><?= $value->total; ?></td>
+											<td><?= $value->score; ?></td>
+											<td><?= $value->total_score; ?></td>
 										</tr>
 										<?php endforeach;?>
 

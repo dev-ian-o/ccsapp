@@ -128,22 +128,46 @@ class Scores{
 	}	
 
 
-	public static function checkWinners($gender){
+	public static function checkWinners($gender,$competition_id){
 
 		$conn = static::connect();
 
+		if(!$competition_id) $competition_id = 1;
 
 		$stmt = $conn->prepare("SELECT contestant_no,b.student_no,lastname,firstname,year,section,course,AVG(a.total_score)
-		 as total FROM tbl_scores a, tbl_contestant b WHERE b.gender = :gender AND a.student_no = b.student_no AND a.competition_id = 1 GROUP BY a.student_no ORDER BY total desc");
+		 as total 
+		 FROM tbl_scores a, tbl_contestant b 
+		 WHERE b.gender = :gender AND a.student_no = b.student_no AND a.competition_id = :competition_id GROUP BY a.student_no ORDER BY total desc");
 
 		$stmt->execute(array(
 			"gender" => $gender,
+			"competition_id" => $competition_id,
 		));
 		
 		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
 
 		return json_encode($row);			
 	}	
+
+	public static function checkTally($gender,$competition_id){
+		$conn = static::connect();
+
+		if(!$competition_id) $competition_id = 1;
+
+		$stmt = $conn->prepare("SELECT contestant_no,c.name,b.student_no,lastname,firstname,year,section,course,score,total_score 
+		FROM tbl_scores a, tbl_contestant b, tbl_judges c 
+		WHERE b.gender = :gender AND a.judges_id = c.judges_id AND a.student_no = b.student_no AND a.competition_id = :competition_id 
+		ORDER BY contestant_no,c.judges_id ASC");
+
+		$stmt->execute(array(
+			"gender" => $gender,
+			"competition_id" => $competition_id,
+		));
+		
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+
+		return json_encode($row);
+	}
 
 
 }
