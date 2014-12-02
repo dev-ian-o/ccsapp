@@ -1,157 +1,181 @@
 <link href="../lib/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
 <?php  session_start();?>
 <?php if(!isset($_SESSION['competition_id']))echo "<script>alert('Login first');location.href='login-judge.php';</script>"; ?>
+<?php if(!isset($_SESSION['event_id']))echo "<script>alert('Login first');location.href='login-judge.php';</script>"; ?>
 <?php if(!isset($_SESSION['judges_id']))echo "<script>location.href='login-judge.php';</script>"; ?>
 <?php include('common/header.php');?>
 <?php include('../includes/classes/Criteria.php');?>
 <?php include('../includes/classes/ScreeningRegistration.php');?>
 <?php include('../includes/classes/Judges.php');?>
 <?php include('../includes/classes/Scores.php');?>
-<?php $contestantsMale = json_decode(ScreeningRegistration::findByCompetitionIdWithGender($_SESSION['competition_id'],"male"));?>
-<?php $contestantsFemale = json_decode(ScreeningRegistration::findByCompetitionIdWithGender($_SESSION['competition_id'],"female"));?>
+<?php include('../includes/classes/competition.php');?>
+<?php $contestantsMale = json_decode(ScreeningRegistration::findByEventIdWithGender($_SESSION['event_id'],"male"));?>
+<?php $contestantsFemale = json_decode(ScreeningRegistration::findByEventIdWithGender($_SESSION['event_id'],"female"));?>
 <?php $rowCriteria = json_decode(Criteria::findByCompetitionId($_SESSION['competition_id']));?>
 <?php $rowScoresMale = json_decode(Scores::findByRows(array(
   "student_no" => $contestantsMale[0]->student_no,
-  "competition_id" => $contestantsMale[0]->competition_id,
+  "competition_id" => $_SESSION['competition_id'],
   "judges_id" => $_SESSION['judges_id'],
 )));?>
 <?php $rowScoresFemale = json_decode(Scores::findByRows(array(
   "student_no" => $contestantsFemale[0]->student_no,
-  "competition_id" => $contestantsFemale[0]->competition_id,
+  "competition_id" => $_SESSION['competition_id'],
   "judges_id" => $_SESSION['judges_id'],
 )));?>
 <?php
 if($rowScoresMale) $scoresMale = json_decode($rowScoresMale[0]->score); 
 if($rowScoresFemale) $scoresFemale = json_decode($rowScoresMale[0]->score);
+
+$rowCompetition = json_decode(Competition::findById($_SESSION['competition_id']));
 ?>
 
   <div class="container">
-      <div style="height: 30px;"><input type="checkbox" class="switch-gender" name="gender" checked value="Mr" data-on-text="Mr" data-off-text="Ms"></div>
+      <!-- <div style="height: 30px;"><input type="checkbox" class="switch-gender" name="gender" checked value="Mr" data-on-text="Mr" data-off-text="Ms"></div> -->
+      <h1><?= ucwords($rowCompetition[0]->competition_name)?></h1>
       <div class="clearfix">
         <span class="pull-right">JUDGE: <?= $_SESSION['judge_name'];?></span>
       </div>
-      <div class="center mr-div">
-          <img style="height: 175px;"image-contestant src="<?php if($contestantsMale[0]->image == '1') echo '../images/male_default.svg'; else echo "../images/".$contestantsMale[0]->image;?>" alt="..." class="img-circle img-thumbnail">
-            <!-- <div class="contestant-no" style="position: absolute;font-size: 40px;right: 50px;">#<span><?= $contestantsMale[0]->contestant_no;?></span></div> -->
-            <select class="contestant-no-select" style="position: absolute;font-size: 40px;right: 50px;">
-                contestantsMale
-                <?php foreach ($contestantsMale as $key => $value):?>  
-                  <option value="<?= $value->contestant_id;?>"><?= $value->contestant_no;?></option>
-                <?php endforeach;?>
-            </select>
-            <div style="position: absolute;font-size: 40px;right: 20px; top:80;">#</div>
-            <div>
-              <button type="button" class="btn btn-primary mT10 btn-sm names">
-                <?= ucwords($contestantsMale[0]->lastname) .', '. ucwords($contestantsMale[0]->firstname); ?>  <br>
-                <?= ucwords($contestantsMale[0]->year) .'-'. $contestantsMale[0]->section; ?>  
-              </button>
-            </div>
-            <br>
-          <form method="post" class="male-form">
-            <input type="hidden" name="gender" value="<?= $contestantsMale[0]->gender; ?>">
-            <input type="hidden" name="student_no" value="<?= $contestantsMale[0]->student_no; ?>">
-            <input type="hidden" name="competition_id" value="<?= $contestantsMale[0]->competition_id; ?>">
-            <input type="hidden" name="contestant_id" value="<?= $contestantsMale[0]->contestant_id; ?>">
-            <input type="hidden" name="scores_id" value="">
-            <input type="hidden" name="judges_id" value="<?= $_SESSION['judges_id'];?>">      
-            <input type="hidden" name="form" value="male_form">
 
-            <?php foreach ($rowCriteria as $key => $value):?>  
-              <br>
-              <?= strtoupper($value->criteria_name); ?>(<?= $value->percentage; ?>%):
-              <input score type="text" 
-                data-criteria="<?= strtolower(str_replace(' ', '_', $value->criteria_name));?>" 
-                data-percentage="<?= $value->percentage; ?>" 
-                class="form-control"
-                <?php if($rowScoresMale):?>
-                 <?php foreach ($scoresMale as $keyScore => $valueScore): ?>
-                  <?php if($keyScore == strtolower(str_replace(' ', '_', $value->criteria_name))):?>
-                  value="<?=  $valueScore;?>"
-                  <?php endif;?>
-                <?php endforeach;?>
-                <?php endif;?>
-                name="score[<?= strtolower(str_replace(' ', '_', $value->criteria_name));?>]" 
-                onkeydown="return isNumberKey(event)" required>
-            <?php endforeach;?><br>
-
-            <span class="lead">TOTAL SCORE: </span>
-            <span class="label label-success total-score"><?php if($rowScoresMale) echo $rowScoresMale[0]->total_score; 
-            else echo "0";?>%</span>
-            <input id="total2" type="hidden" value="<?php if($rowScoresMale) echo $rowScoresMale[0]->total_score; 
-            else echo "0";?>" name="total_score" class="mT10"><br><br>
-
-            <input type="submit" name="submit" class="btn btn-danger btn-sm" value="SAVE">
-          </form>
-
-          <div class="clearfix">
-            <div class="male-options">
-              <button class="btn btn-primary btn-sm pull-right next">Next</button>
-              <button class="btn btn-primary btn-sm pull-left previous">Previous</button>
-            </div>
+        <div class="clearfix">
+          <div class="all-options">
+            <button class="btn btn-primary btn-sm pull-right next">Next <i class="fa fa-arrow-right"></i></button>
+            <button class="btn btn-primary btn-sm pull-left previous"><i class="fa fa-arrow-left"></i> Previous</button>
           </div>
-      </div>
-      <div class="center ms-div hide">
-          <!-- <img src="../images/female_default.svg" alt="..." class="img-circle img-thumbnail"> -->
-
-          <img style="height: 175px;" image-contestant src="<?php if($contestantsFemale[0]->image == '1') echo '../images/female_default.svg'; else echo "../images/".$contestantsFemale[0]->image;?>" alt="..." class="img-circle img-thumbnail">
-            <!-- <div class="contestant-no" style="position: absolute;font-size: 40px;right: 50px;">#<span><?= $contestantsFemale[0]->contestant_no;?></span></div> -->
-            <select class="contestant-no-select" style="position: absolute;font-size: 40px;right: 50px;">
-                
-                <?php foreach ($contestantsFemale as $key => $value):?>  
-                  <option value="<?= $value->contestant_id;?>"><?= $value->contestant_no;?></option>
-                <?php endforeach;?>
-            </select>
-            <div style="position: absolute;font-size: 40px;right: 20px; top:80;">#</div>
-
-            <div>
-              <button type="button" class="btn btn-primary mT10 btn-sm names">
-                <?= ucwords($contestantsFemale[0]->lastname) .', '. ucwords($contestantsFemale[0]->firstname); ?>  <br>
-                <?= ucwords($contestantsFemale[0]->year) .'-'. $contestantsFemale[0]->section; ?>  
-              </button>
-            </div>
-            <br>
-          <form method="post" class="female-form">
-            <input type="hidden" name="gender" value="<?= $contestantsFemale[0]->gender; ?>">
-            <input type="hidden" name="student_no" value="<?= $contestantsFemale[0]->student_no; ?>">
-            <input type="hidden" name="competition_id" value="<?= $contestantsFemale[0]->competition_id; ?>">
-            <input type="hidden" name="contestant_id" value="<?= $contestantsFemale[0]->contestant_id; ?>">
-            <input type="hidden" name="scores_id" value="">
-            <input type="hidden" name="judges_id" value="<?= $_SESSION['judges_id'];?>">      
-            <input type="hidden" name="form" value="female_form">
-
-            <?php foreach ($rowCriteria as $key => $value):?>  
+        </div>
+      <div class="row">
+        <div class="center col-xs-6 mr-div" style="border-right:4px solid">
+            <div class="text-center">
+              <h3>MALE</h3>
+            </div><br>
+            <img style="height: 175px;"image-contestant src="<?php if($contestantsMale[0]->image == '1') echo '../images/male_default.svg'; else echo "../images/".$contestantsMale[0]->image;?>" alt="..." class="img-circle img-thumbnail">
+              <!-- <div class="contestant-no" style="position: absolute;font-size: 40px;right: 50px;">#<span><?= $contestantsMale[0]->contestant_no;?></span></div> -->
+              <select class="contestant-no-select" style="position: absolute;font-size: 40px;right: 50px;">
+                  contestantsMale
+                  <?php foreach ($contestantsMale as $key => $value):?>  
+                    <option value="<?= $value->contestant_id;?>"><?= $value->contestant_no;?></option>
+                  <?php endforeach;?>
+              </select>
+              <div style="position: absolute;font-size: 40px;right: 20px; top:80;">#</div>
+              <div>
+                <button type="button" class="btn btn-primary mT10 btn-sm names">
+                  <?= ucwords($contestantsMale[0]->lastname) .', '. ucwords($contestantsMale[0]->firstname); ?>  <br>
+                  <?= ucwords($contestantsMale[0]->year) .'-'. $contestantsMale[0]->section; ?>  
+                </button>
+              </div>
               <br>
-              <?= strtoupper($value->criteria_name); ?>(<?= $value->percentage; ?>%):
-              <input score type="text" 
-                data-criteria="<?= strtolower(str_replace(' ', '_', $value->criteria_name));?>" 
-                data-percentage="<?= $value->percentage; ?>" 
-                class="form-control"
-                <?php if($rowScoresFemale):?>
-                 <?php foreach ($scoresFemale as $keyScore => $valueScore): ?>
-                  <?php if($keyScore == strtolower(str_replace(' ', '_', $value->criteria_name))):?>
-                  value="<?=  $valueScore;?>"
+            <form method="post" class="male-form">
+              <input type="hidden" name="gender" value="<?= $contestantsMale[0]->gender; ?>">
+              <input type="hidden" name="student_no" value="<?= $contestantsMale[0]->student_no; ?>">
+              <input type="hidden" name="competition_id" value="<?= $_SESSION['competition_id']; ?>">
+              <input type="hidden" name="contestant_id" value="<?= $contestantsMale[0]->contestant_id; ?>">
+              <input type="hidden" name="event_id" value="<?= $contestantsMale[0]->event_id; ?>">
+              <input type="hidden" name="scores_id" value="">
+              <input type="hidden" name="judges_id" value="<?= $_SESSION['judges_id'];?>">      
+              <input type="hidden" name="form" value="male_form">
+
+              <?php foreach ($rowCriteria as $key => $value):?>  
+                <br>
+                <?= strtoupper($value->criteria_name); ?>(<?= $value->percentage; ?>%):
+                <input score type="text" 
+                  data-criteria="<?= strtolower(str_replace(' ', '_', $value->criteria_name));?>" 
+                  data-percentage="<?= $value->percentage; ?>" 
+                  class="form-control"
+                  <?php if($rowScoresMale):?>
+                   <?php foreach ($scoresMale as $keyScore => $valueScore): ?>
+                    <?php if($keyScore == strtolower(str_replace(' ', '_', $value->criteria_name))):?>
+                    value="<?=  $valueScore;?>"
+                    <?php endif;?>
+                  <?php endforeach;?>
                   <?php endif;?>
-                <?php endforeach;?>
-                <?php endif;?>
-                name="score[<?= strtolower(str_replace(' ', '_', $value->criteria_name));?>]" 
-                onkeydown="return isNumberKey(event)" required>
-            <?php endforeach;?><br>
+                  name="score[<?= strtolower(str_replace(' ', '_', $value->criteria_name));?>]" 
+                  onkeydown="return isNumberKey(event)" required>
+              <?php endforeach;?><br>
 
-            <span class="lead">TOTAL SCORE: </span>
-            <span class="label label-success total-score"><?php if($rowScoresFemale) echo $rowScoresFemale[0]->total_score; 
-            else echo "0";?>%</span>
-            <input id="total2" type="hidden" value="<?php if($rowScoresFemale) echo $rowScoresFemale[0]->total_score; 
-            else echo "0";?>" name="total_score" class="mT10"><br><br>
+              <span class="lead">TOTAL SCORE: </span>
+              <span class="label label-success total-score"><?php if($rowScoresMale) echo $rowScoresMale[0]->total_score; 
+              else echo "0";?>%</span>
+              <input id="total2" type="hidden" value="<?php if($rowScoresMale) echo $rowScoresMale[0]->total_score; 
+              else echo "0";?>" name="total_score" class="mT10"><br><br>
 
-            <input type="submit" name="submit" class="btn btn-danger btn-sm" value="SAVE">
-          </form>
+              <input type="submit" name="submit" class="btn btn-danger btn-sm" value="SAVE">
+            </form>
 
-          <div class="clearfix">
-            <div class="female-options">
-              <button class="btn btn-primary btn-sm pull-right next">Next</button>
-              <button class="btn btn-primary btn-sm pull-left previous">Previous</button>
+            <div class="clearfix">
+              <div class="male-options">
+                <button class="btn btn-primary btn-sm pull-right next">Next</button>
+                <button class="btn btn-primary btn-sm pull-left previous">Previous</button>
+              </div>
             </div>
-          </div>
+        </div>
+
+        <div class="center col-xs-6 ms-div">
+            <!-- <img src="../images/female_default.svg" alt="..." class="img-circle img-thumbnail"> -->
+
+            <div class="text-center">
+              <h3>FEMALE</h3>
+            </div><br>
+            <img style="height: 175px;" image-contestant src="<?php if($contestantsFemale[0]->image == '1') echo '../images/female_default.svg'; else echo "../images/".$contestantsFemale[0]->image;?>" alt="..." class="img-circle img-thumbnail">
+              <!-- <div class="contestant-no" style="position: absolute;font-size: 40px;right: 50px;">#<span><?= $contestantsFemale[0]->contestant_no;?></span></div> -->
+              <select class="contestant-no-select" style="position: absolute;font-size: 40px;right: 50px;">
+                  
+                  <?php foreach ($contestantsFemale as $key => $value):?>  
+                    <option value="<?= $value->contestant_id;?>"><?= $value->contestant_no;?></option>
+                  <?php endforeach;?>
+              </select>
+              <div style="position: absolute;font-size: 40px;right: 20px; top:80;">#</div>
+
+              <div>
+                <button type="button" class="btn btn-primary mT10 btn-sm names">
+                  <?= ucwords($contestantsFemale[0]->lastname) .', '. ucwords($contestantsFemale[0]->firstname); ?>  <br>
+                  <?= ucwords($contestantsFemale[0]->year) .'-'. $contestantsFemale[0]->section; ?>  
+                </button>
+              </div>
+              <br>
+            <form method="post" class="female-form">
+              <input type="hidden" name="gender" value="<?= $contestantsFemale[0]->gender; ?>">
+              <input type="hidden" name="student_no" value="<?= $contestantsFemale[0]->student_no; ?>">
+              <input type="hidden" name="competition_id" value="<?= $_SESSION['competition_id']; ?>">
+              <input type="hidden" name="contestant_id" value="<?= $contestantsFemale[0]->contestant_id; ?>">
+              <input type="hidden" name="event_id" value="<?= $contestantsFemale[0]->event_id; ?>">
+              <input type="hidden" name="scores_id" value="">
+              <input type="hidden" name="judges_id" value="<?= $_SESSION['judges_id'];?>">      
+              <input type="hidden" name="form" value="female_form">
+
+              <?php foreach ($rowCriteria as $key => $value):?>  
+                <br>
+                <?= strtoupper($value->criteria_name); ?>(<?= $value->percentage; ?>%):
+                <input score type="text" 
+                  data-criteria="<?= strtolower(str_replace(' ', '_', $value->criteria_name));?>" 
+                  data-percentage="<?= $value->percentage; ?>" 
+                  class="form-control"
+                  <?php if($rowScoresFemale):?>
+                   <?php foreach ($scoresFemale as $keyScore => $valueScore): ?>
+                    <?php if($keyScore == strtolower(str_replace(' ', '_', $value->criteria_name))):?>
+                    value="<?=  $valueScore;?>"
+                    <?php endif;?>
+                  <?php endforeach;?>
+                  <?php endif;?>
+                  name="score[<?= strtolower(str_replace(' ', '_', $value->criteria_name));?>]" 
+                  onkeydown="return isNumberKey(event)" required>
+              <?php endforeach;?><br>
+
+              <span class="lead">TOTAL SCORE: </span>
+              <span class="label label-success total-score"><?php if($rowScoresFemale) echo $rowScoresFemale[0]->total_score; 
+              else echo "0";?>%</span>
+              <input id="total2" type="hidden" value="<?php if($rowScoresFemale) echo $rowScoresFemale[0]->total_score; 
+              else echo "0";?>" name="total_score" class="mT10"><br><br>
+
+              <input type="submit" name="submit" class="btn btn-danger btn-sm" value="SAVE">
+            </form>
+
+            <div class="clearfix">
+              <div class="female-options">
+                <button class="btn btn-primary btn-sm pull-right next">Next</button>
+                <button class="btn btn-primary btn-sm pull-left previous">Previous</button>
+              </div>
+            </div>
+        </div>
+
       </div>
   </div>
 
@@ -391,6 +415,22 @@ if($rowScoresFemale) $scoresFemale = json_decode($rowScoresMale[0]->score);
     };
 
 
+    $('.all-options').find('.next').on('click', function(e){
+      e.preventDefault();
+      submitFormMale();
+      nextValMale();
+      submitFormFemale();
+      nextValFemale();
+      console.log('next male');
+    });
+    $('.all-options').find('.previous').on('click', function(e){
+      e.preventDefault();
+      submitFormMale();
+      prevValMale();
+      submitFormFemale();
+      prevValFemale();
+      console.log('previous male');
+    });
 
     $('.male-options').find('.next').on('click', function(e){
       e.preventDefault();

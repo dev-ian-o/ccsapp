@@ -19,12 +19,12 @@ class ScreeningRegistration{
 
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("INSERT INTO `tbl_contestant`(`student_no`, `competition_id`, `lastname`, `firstname`, `gender`, `year`, `section`, `course`, `image`, `created_at`, `contestant_no`) 
-					VALUES(:student_no, :competition_id, :lastname, :firstname, :gender, :year, :section, :course, :image, now(), :contestant_no)");
+		$stmt = $conn->prepare("INSERT INTO `tbl_contestant`(`student_no`, `event_id`, `lastname`, `firstname`, `gender`, `year`, `section`, `course`, `image`, `created_at`, `contestant_no`) 
+					VALUES(:student_no, :event_id, :lastname, :firstname, :gender, :year, :section, :course, :image, now(), :contestant_no)");
 
 		$stmt->execute(array(
 			"student_no" => $row['student_no'],
-			"competition_id" => $row['competition_id'],
+			"event_id" => $row['event_id'],
 			"lastname" => $row['lastname'],
 			"firstname" => $row['firstname'],
 			"gender" => $row['gender'],
@@ -45,7 +45,7 @@ class ScreeningRegistration{
 
 		$stmt = $conn->prepare("UPDATE tbl_contestant 
 			SET student_no = :student_no,
-				competition_id = :competition_id,
+				event_id = :event_id,
 				lastname = :lastname,
 				firstname = :firstname,
 				gender = :gender,
@@ -59,7 +59,7 @@ class ScreeningRegistration{
 
 		$stmt->execute(array(
 			"student_no" => $row['student_no'],
-			"competition_id" => $row['competition_id'],
+			"event_id" => $row['event_id'],
 			"contestant_id" => $row['contestant_id'],
 			"contestant_no" => $row['contestant_no'],
 			"lastname" => $row['lastname'],
@@ -137,11 +137,11 @@ class ScreeningRegistration{
 			
 	}
 
-	public static function findByCompetitionIdWithGender($id,$gender){
+	public static function findByEventIdWithGender($id,$gender){
 
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE competition_id = :id AND gender LIKE :gender AND deleted_at IS NULL ORDER BY contestant_no ASC");
+		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE event_id = :id AND gender LIKE :gender AND deleted_at IS NULL ORDER BY contestant_no ASC");
 
 		$stmt->execute(array(
 			"id" => $id,
@@ -158,10 +158,10 @@ class ScreeningRegistration{
 		$val = $row;
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE gender = :gender AND competition_id =:competition_id AND deleted_at IS NULL ORDER BY contestant_no ASC");
+		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE event_id = :event_id AND gender = :gender AND deleted_at IS NULL ORDER BY contestant_no ASC");
 
 		$stmt->execute(array(
-			"competition_id" => $row['competition_id'],
+			"event_id" => $row['event_id'],
 			"gender" => $row['gender'],
 		));
 		
@@ -170,8 +170,8 @@ class ScreeningRegistration{
 		foreach ($row as $key => $value) {
 			foreach ($value as $key_val => $value_val) {
 				
-				if($key_val === "contestant_id"){
-					if($value_val === $val['contestant_id']){
+				if($key_val === "event_id"){
+					if($value_val === $val['event_id']){
 						if(array_key_exists(++$key, $row)) return json_encode($row[$key]);
 						break;
 					}
@@ -186,10 +186,10 @@ class ScreeningRegistration{
 		$val = $row;
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE gender = :gender AND competition_id =:competition_id AND deleted_at IS NULL ORDER BY contestant_no ASC");
+		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE event_id = :event_id AND gender = :gender AND deleted_at IS NULL ORDER BY contestant_no ASC");
 
 		$stmt->execute(array(
-			"competition_id" => $row['competition_id'],
+			"event_id" => $row['event_id'],
 			"gender" => $row['gender'],
 		));
 		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
@@ -197,8 +197,8 @@ class ScreeningRegistration{
 		foreach ($row as $key => $value) {
 			foreach ($value as $key_val => $value_val) {
 				
-				if($key_val === "contestant_id"){
-					if($value_val === $val['contestant_id']){
+				if($key_val === "event_id"){
+					if($value_val === $val['event_id']){
 						if(array_key_exists(--$key, $row)) return json_encode($row[$key]);
 						break;
 					}
