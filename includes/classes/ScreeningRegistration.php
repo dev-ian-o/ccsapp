@@ -170,8 +170,8 @@ class ScreeningRegistration{
 		foreach ($row as $key => $value) {
 			foreach ($value as $key_val => $value_val) {
 				
-				if($key_val === "event_id"){
-					if($value_val === $val['event_id']){
+				if($key_val === "contestant_id"){
+					if($value_val === $val['contestant_id']){
 						if(array_key_exists(++$key, $row)) return json_encode($row[$key]);
 						break;
 					}
@@ -197,8 +197,8 @@ class ScreeningRegistration{
 		foreach ($row as $key => $value) {
 			foreach ($value as $key_val => $value_val) {
 				
-				if($key_val === "event_id"){
-					if($value_val === $val['event_id']){
+				if($key_val === "contestant_id"){
+					if($value_val === $val['contestant_id']){
 						if(array_key_exists(--$key, $row)) return json_encode($row[$key]);
 						break;
 					}

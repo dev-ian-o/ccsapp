@@ -3,9 +3,11 @@
 <?php include 'common/header.php';?>
 <?php require_once '../includes/Classes/Scores.php';?>
 <?php require_once '../includes/Classes/Competition.php';?>
+<?php require_once '../includes/Classes/ScreeningRegistration.php';?>
 <?php 
-
+	$row = "";
 	$rowCompetition = json_decode(Competition::fetch());
+	$rowEventCompetition = json_decode(Competition::count(1));
 	if (isset($_GET['id'])) 
 		$gender = $_GET['id'];
 	else
@@ -16,7 +18,10 @@
 	else
 		$competition_id = "1";
 
-	$row = json_decode(Scores::checkWinners($gender,$competition_id));
+	$rowContestant = json_decode(ScreeningRegistration::findByEventIdWithGender(1,$gender));
+	// echo "<pre>";
+	// print_r($rowEventCompetition[0]);
+	// echo "</pre>";
 ?>
 	<body>
 		<?php include 'common/nav.php';?>
@@ -57,31 +62,56 @@
 									<thead>
 										<tr>
 											<th>#</th>
-											<th>ID No.</th>
 											<th>Contestant No.</th>
 											<th>Last Name</th>
 											<th>First Name</th>
 											<th>Gender</th>
 											<th>Year</th>
 											<th>Section</th>
-											<th>total</th>
+											<?php foreach($rowCompetition as $key => $value):?>
+												<?php if( ucwords($value->competition_description) != ucwords("top five")):?>
+													<th><?= $value->competition_description;?></th>
+												<?php endif;?>
+											<?php endforeach;?>
+											<th>
+												grand-total
+											</th>
 										</tr>
 									</thead>
 
 									<tbody>
-										<?php $a = 1; foreach ($row as $key => $value):?>
+										<?php $a = 1;$grandTotal = 0; foreach ($rowContestant as $key => $value):?>
+										<?php $grandTotal = 0;?>
 										<tr>
 											<td><?= $a++; ?></td>
-											<td><?= $value->student_no; ?></td>
 											<td><?= $value->contestant_no; ?></td>
 											<td><?= $value->lastname; ?></td>
 											<td><?= $value->firstname; ?></td>
 											<td><?= $gender; ?></td>
 											<td><?= $value->year; ?></td>
 											<td><?= $value->section; ?></td>
-											<td><?= $value->total; ?></td>
+											
+											<?php foreach($rowCompetition as $keyComp => $valueComp):?>
+												<?php if( ucwords($valueComp->competition_description) != ucwords("top five")):?>
+												<td>
+
+												<?php $row = json_decode(Scores::checkWinnersPerCategory($gender,$valueComp->competition_id)); ?>
+												<?php foreach($row as $keyRow => $valueRow):?>
+													<?php if($valueRow->competition_id == $valueComp->competition_id && $value->student_no == $valueRow->student_no){ 
+
+															echo $valueRow->total;
+															$grandTotal += $valueRow->total;
+														}
+
+													?>
+												<?php endforeach;?>
+												</td>
+												<?php endif;?>
+											<?php endforeach;?>
+											<td><?= $grandTotal;?></td>
 										</tr>
 										<?php endforeach;?>
+
 
 									</tbody>
 								</table>

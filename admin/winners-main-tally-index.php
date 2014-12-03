@@ -6,6 +6,7 @@
 <?php 
 
 	$rowCompetition = json_decode(Competition::fetch());
+	$rowEventCompetition = json_decode(Competition::count(1));
 	if (isset($_GET['id'])) 
 		$gender = $_GET['id'];
 	else
@@ -16,7 +17,6 @@
 	else
 		$competition_id = "1";
 
-	$row = json_decode(Scores::checkWinners($gender,$competition_id));
 ?>
 	<body>
 		<?php include 'common/nav.php';?>
@@ -64,6 +64,8 @@
 											<th>Gender</th>
 											<th>Year</th>
 											<th>Section</th>
+											<th>total ave</th>
+											<th>percentage</th>
 											<th>total</th>
 										</tr>
 									</thead>
@@ -79,6 +81,8 @@
 											<td><?= $gender; ?></td>
 											<td><?= $value->year; ?></td>
 											<td><?= $value->section; ?></td>
+											<td><?= $value->total_score_ave; ?></td>
+											<td><?= $value->percentage; ?></td>
 											<td><?= $value->total; ?></td>
 										</tr>
 										<?php endforeach;?>

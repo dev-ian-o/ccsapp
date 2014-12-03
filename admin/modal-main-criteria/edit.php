@@ -8,10 +8,19 @@
       <form method="post">
       <div class="modal-body">
         <form method="post">
+          <input type="hidden" name="main_criteria_id" value="">
+          <div class="control-group">
+            <label class="control-label" for="event_id">Event Name</label>
 
-          <input type="hidden" name="criteria_id" value="">
-          <input type="hidden" name="image" value="1">
-          
+            <div class="controls">
+              <select class="form-control" name="event_id">
+                  <?php foreach ($rowEvent as $key => $value):?>
+                  <option <?php if($event_id == $value->event_id) echo "selected";?> value="<?= $value->event_id?>"><?= $value->event_name?></option>                 
+                  <?php endforeach;?>
+                </select>
+            </div>
+          </div>
+
           <div class="control-group">
             <label class="control-label" for="competition_id">Competition Name</label>
 
@@ -23,11 +32,13 @@
                 </select>
             </div>
           </div>
+                
+
           <div class="control-group">
-            <label class="control-label" for="criteria_name">Criteria Name</label>
+            <label class="control-label" for="main_criteria_name">Criteria Name</label>
 
             <div class="controls">
-              <input class="span5" type="text" name="criteria_name" id="criteria_name" placeholder="Criteria Name">
+              <input class="span5" type="text" name="main_criteria_name" id="main_criteria_name" placeholder="Criteria Name">
             </div>
           </div>
 
@@ -36,14 +47,6 @@
 
             <div class="controls">
               <input class="span5" type="text" name="percentage" id="percentage" placeholder="Percentage">
-            </div>
-          </div>
-          
-          <div class="control-group">
-            <label class="control-label" for="total_percentage">Total Percentage</label>
-
-            <div class="controls">
-              <input class="span5" type="text" name="total_percentage" id="total_percentage" placeholder="Percentage">
             </div>
           </div>
 
@@ -76,7 +79,7 @@
 
 <?php 
   if(isset($_POST['edit'])){
-    Criteria::edit($_POST);
+    MainCriteria::edit($_POST);
     echo "<script>alert('Success!');location.href='".$_SERVER['PHP_SELF']."';</script>";
   }
 ?>

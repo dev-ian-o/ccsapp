@@ -1,7 +1,7 @@
 
 <?php
 
-class Criteria{
+class MainCriteria{
 	public static function connect(){
 		$config = array(
 			'host' => 'localhost',
@@ -19,14 +19,14 @@ class Criteria{
 
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("INSERT INTO `tbl_criteria`(`competition_id`, `criteria_name`, `percentage`, ,`total_percentage`, `created_at`) 
-					VALUES(:competition_id,:criteria_name, :percentage, :total_percentage now())");
+		$stmt = $conn->prepare("INSERT INTO `tbl_main_criteria`(`event_id`, `competition_id`, `main_criteria_name`, `percentage`, `created_at`) 
+					VALUES(:event_id,:competition_id, :main_criteria_name, :percentage, now())");
 
 		$stmt->execute(array(
+			"event_id" => $row['event_id'],
 			"competition_id" => $row['competition_id'],
-			"criteria_name" => $row['criteria_name'],
+			"main_criteria_name" => $row['main_criteria_name'],
 			"percentage" => $row['percentage'],
-			"total_percentage" => $row['total_percentage'],
 		));
 		
 		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
@@ -37,20 +37,20 @@ class Criteria{
 		//extend the row array to fetch
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("UPDATE tbl_criteria 
-			SET competition_id =:competition_id,
-				criteria_name =:criteria_name,
+		$stmt = $conn->prepare("UPDATE tbl_main_criteria 
+			SET event_id =:event_id,
+				competition_id =:competition_id,
+				main_criteria_name =:main_criteria_name,
 				percentage =:percentage,
-				total_percentage =:total_percentage,
 				updated_at = now()
-			WHERE criteria_id = :criteria_id");
+			WHERE main_criteria_id = :main_criteria_id");
 
 		$stmt->execute(array(
+			"event_id" => $row['event_id'],
 			"competition_id" => $row['competition_id'],
-			"criteria_name" => $row['criteria_name'],
-			"total_percentage" => $row['total_percentage'],
+			"main_criteria_name" => $row['main_criteria_name'],
 			"percentage" => $row['percentage'],
-			"criteria_id" => $row['criteria_id'],
+			"main_criteria_id" => $row['main_criteria_id'],
 		));
 		
 		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
@@ -60,9 +60,9 @@ class Criteria{
 
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("UPDATE tbl_criteria 
+		$stmt = $conn->prepare("UPDATE tbl_main_criteria 
 			SET deleted_at = now()
-			WHERE criteria_id = :id");
+			WHERE main_criteria_id = :id");
 
 		$stmt->execute(array(
 			"id" => $id,
@@ -76,7 +76,7 @@ class Criteria{
 
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("SELECT * FROM tbl_criteria WHERE deleted_at IS NULL");
+		$stmt = $conn->prepare("SELECT * FROM tbl_main_criteria WHERE deleted_at IS NULL");
 
 		$stmt->execute(array(
 
@@ -91,22 +91,7 @@ class Criteria{
 
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("SELECT * FROM tbl_criteria WHERE criteria_id = :id AND deleted_at IS NULL");
-
-		$stmt->execute(array(
-			"id" => $id
-		));
-		
-		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
-
-		return json_encode($row);
-	}
-
-	public static function findByCompetitionId($id){
-
-		$conn = static::connect();
-
-		$stmt = $conn->prepare("SELECT * FROM tbl_criteria WHERE competition_id = :id AND deleted_at IS NULL");
+		$stmt = $conn->prepare("SELECT * FROM tbl_main_criteria WHERE main_criteria_id = :id AND deleted_at IS NULL");
 
 		$stmt->execute(array(
 			"id" => $id

@@ -96,4 +96,35 @@ class Competition{
 		return json_encode($row);
 	}
 
+	public static function findByEventId($id){
+
+		$conn = static::connect();
+
+		$stmt = $conn->prepare("SELECT * FROM tbl_competition WHERE event_id = :id AND deleted_at IS NULL");
+
+		$stmt->execute(array(
+			"id" => $id
+		));
+		
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+
+		return json_encode($row);
+	}
+
+
+	public static function count($id){
+
+		$conn = static::connect();
+
+		$stmt = $conn->prepare("SELECT *,count(*) as total FROM tbl_competition WHERE event_id = :id AND deleted_at IS NULL");
+
+		$stmt->execute(array(
+			"id" => $id
+		));
+		
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+
+		return json_encode($row);
+	}
+
 }
