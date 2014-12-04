@@ -12,6 +12,7 @@
 <?php include('../includes/classes/Judges.php');?>
 <?php include('../includes/classes/Scores.php');?>
 <?php include('../includes/classes/competition.php');?>
+
 <?php $contestantsMale = json_decode(ScreeningRegistration::findByEventIdWithGender($_SESSION['event_id'],"male"));?>
 <?php $contestantsFemale = json_decode(ScreeningRegistration::findByEventIdWithGender($_SESSION['event_id'],"female"));?>
 <?php $rowCriteria = json_decode(Criteria::findByCompetitionId($_SESSION['competition_id']));?>

@@ -4,8 +4,12 @@
 <?php require_once '../includes/Classes/Scores.php';?>
 <?php require_once '../includes/Classes/Competition.php';?>
 <?php require_once '../includes/Classes/ScreeningRegistration.php';?>
+<?php require_once '../includes/Classes/Filter.php';?>
 <?php 
 	$row = "";
+
+	$rowTopFive = array();
+
 	$rowCompetition = json_decode(Competition::fetch());
 	$rowEventCompetition = json_decode(Competition::count(1));
 	if (isset($_GET['id'])) 
@@ -101,6 +105,13 @@
 
 															echo $valueRow->total;
 															$grandTotal += $valueRow->total;
+															$rowTopFive[$a-2] = array(
+																"competition_id" => $valueRow->competition_id,
+																"event_id" => $value->event_id,
+																"contestant_id" => $value->contestant_id,
+																"gender" => $value->gender,
+																"grandTotal" => floatval($grandTotal),
+															);  
 														}
 
 													?>
@@ -111,7 +122,27 @@
 											<td><?= $grandTotal;?></td>
 										</tr>
 										<?php endforeach;?>
+										<?php
+										function array_sort_by_column(&$arr, $col, $dir = SORT_DESC) {
+										    $sort_col = array();
+										    foreach ($arr as $key=> $row) {
+										        $sort_col[$key] = $row[$col];
+										    }
 
+										    array_multisort($sort_col, $dir, $arr);
+										}
+
+
+										array_sort_by_column($rowTopFive, 'grandTotal');
+										$x = 0;
+										$countGender = json_decode(Filter::countGender(1,$gender));
+										// print_r($countGender);
+										if($countGender[0]->total > 0)
+											Filter::truncate();
+										while (5 > $x) {
+											Filter::add($rowTopFive[$x++]);
+										}
+										?>
 
 									</tbody>
 								</table>

@@ -57,7 +57,7 @@
 									</div>
 								</div>
 
-								<table id="table-competition" class="table table-striped table-bordered table-hover">
+								<table id="table-competition" class="table table-striped table-responsive table-bordered table-hover">
 									<thead>
 										<tr>
 											<th>#</th>
