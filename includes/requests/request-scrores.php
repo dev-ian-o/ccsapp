@@ -4,7 +4,11 @@
 	//form name here ----------v
 	if(isset($_POST['next']))
 	{	
-		$reg = ScreeningRegistration::findByNext($_POST);
+		if(!isset($_POST['filter']))
+			$reg = ScreeningRegistration::findByNext($_POST);
+		else
+			$reg = ScreeningRegistration::findByNext($_POST,true);
+
 		$reg = json_decode($reg);
 		$_POST['student_no'] = $reg->student_no;
 		$scores = json_decode(Scores::findByRows($_POST));
@@ -22,7 +26,12 @@
 
 	if(isset($_POST['prev']))
 	{	
-		$reg = ScreeningRegistration::findByPrev($_POST);
+
+		if(!isset($_POST['filter']))
+			$reg = ScreeningRegistration::findByPrev($_POST);
+		else
+			$reg = ScreeningRegistration::findByPrev($_POST,true);
+		
 		$reg = json_decode($reg);
 		$_POST['student_no'] = $reg->student_no;
 		$scores = json_decode(Scores::findByRows($_POST));
@@ -39,7 +48,11 @@
 	
 	if(isset($_POST['nextFemale']))
 	{	
-		$reg = ScreeningRegistration::findByNext($_POST);
+		if(!isset($_POST['filter']))
+			$reg = ScreeningRegistration::findByNext($_POST);
+		else
+			$reg = ScreeningRegistration::findByNext($_POST,true);
+
 		$reg = json_decode($reg);
 		$_POST['student_no'] = $reg->student_no;
 		$scores = json_decode(Scores::findByRows($_POST));
@@ -54,7 +67,12 @@
 	}
 	if(isset($_POST['prevFemale']))
 	{	
-		$reg = ScreeningRegistration::findByPrev($_POST);
+
+		if(!isset($_POST['filter']))
+			$reg = ScreeningRegistration::findByPrev($_POST);
+		else
+			$reg = ScreeningRegistration::findByPrev($_POST,true);
+		
 		$reg = json_decode($reg);
 		$_POST['student_no'] = $reg->student_no;
 		$scores = json_decode(Scores::findByRows($_POST));

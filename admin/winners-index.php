@@ -16,7 +16,8 @@
 	else
 		$competition_id = "1";
 
-	$row = json_decode(Scores::checkWinners($gender,$competition_id));
+	$rowMale = json_decode(Scores::checkWinners("male",$competition_id));
+	$rowFemale = json_decode(Scores::checkWinners("female",$competition_id));
 ?>
 	<body>
 		<?php include 'common/nav.php';?>
@@ -38,19 +39,19 @@
 					</div><!--/.page-header-->
 
 					<div class="row-fluid">
-								<h3 class="header smaller lighter blue"></h3>
+								<!-- <h3 class="header smaller lighter blue"></h3>
 								Gender: <select class="form-control" name="sort_by">
 									<option <?php if($gender === "male") echo "selected"?> value="male">Male</option>
 									<option <?php if($gender === "female") echo "selected"?> value="female">Female</option>
 								</select>
-
+ -->
 								Sort By: <select class="form-control" name="sort_by_competition">
 									<?php foreach ($rowCompetition as $key => $value):?>
 									<option <?php  if($competition_id == $value->competition_id) echo"selected"; ?> value="<?= $value->competition_id?>"><?= $value->competition_description?></option>									
 									<?php endforeach;?>
 								</select>
 								<div class="table-header clearfix">
-									Winners
+									Male Winners
 								</div>
 
 								<table id="table-competition" class="table table-striped table-bordered table-hover">
@@ -69,7 +70,43 @@
 									</thead>
 
 									<tbody>
-										<?php $a = 1; foreach ($row as $key => $value):?>
+										<?php $a = 1; foreach ($rowMale as $key => $value):?>
+										<tr>
+											<td><?= $a++; ?></td>
+											<td><?= $value->student_no; ?></td>
+											<td><?= $value->contestant_no; ?></td>
+											<td><?= $value->lastname; ?></td>
+											<td><?= $value->firstname; ?></td>
+											<td><?= $gender; ?></td>
+											<td><?= $value->year; ?></td>
+											<td><?= $value->section; ?></td>
+											<td><?= $value->total; ?></td>
+										</tr>
+										<?php endforeach;?>
+
+									</tbody>
+								</table>
+								<div class="table-header clearfix">
+									Female Winners
+								</div>
+
+								<table id="table-competition" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>ID No.</th>
+											<th>Contestant No.</th>
+											<th>Last Name</th>
+											<th>First Name</th>
+											<th>Gender</th>
+											<th>Year</th>
+											<th>Section</th>
+											<th>total</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<?php $a = 1; foreach ($rowFemale as $key => $value):?>
 										<tr>
 											<td><?= $a++; ?></td>
 											<td><?= $value->student_no; ?></td>

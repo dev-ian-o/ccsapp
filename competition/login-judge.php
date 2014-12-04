@@ -52,10 +52,12 @@
       session_start();
       $_SESSION['judges_id'] = $judge[0]->judges_id;
       $_SESSION['event_id'] = $judge[0]->event_id;
-      $_SESSION['competition_id'] = $_POST['competition_id'];
+      // $_SESSION['competition_id'] = $_POST['competition_id'];
       $_SESSION['judge_name'] = $judge[0]->name;
       if($judge[0]->judges_id)
-        echo "<script>location.href = 'new.php';</script>";
+        echo "<script>location.href = 'new.php?".$_POST['competition_id']."';</script>";
+
+        // echo "<script>location.href = 'new.php?id="+$_POST['competition_id']+"';</script>";
     }
 
   }

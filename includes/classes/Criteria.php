@@ -19,8 +19,8 @@ class Criteria{
 
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("INSERT INTO `tbl_criteria`(`competition_id`, `criteria_name`, `percentage`, ,`total_percentage`, `created_at`) 
-					VALUES(:competition_id,:criteria_name, :percentage, :total_percentage now())");
+		$stmt = $conn->prepare("INSERT INTO `tbl_criteria`(`competition_id`, `criteria_name`, `percentage`, `total_percentage`, `created_at`) 
+					VALUES(:competition_id,:criteria_name, :percentage, :total_percentage, now())");
 
 		$stmt->execute(array(
 			"competition_id" => $row['competition_id'],

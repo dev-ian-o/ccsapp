@@ -5,6 +5,7 @@
 <?php require_once '../includes/Classes/Competition.php';?>
 <?php require_once '../includes/Classes/ScreeningRegistration.php';?>
 <?php require_once '../includes/Classes/Filter.php';?>
+<?php require_once '../includes/Classes/Helper.php';?>
 <?php 
 	$row = "";
 
@@ -22,7 +23,8 @@
 	else
 		$competition_id = "1";
 
-	$rowContestant = json_decode(ScreeningRegistration::findByEventIdWithGender(1,$gender));
+	$rowContestantMale = json_decode(ScreeningRegistration::findByEventIdWithGender(1,"male"));
+	$rowContestantFemale = json_decode(ScreeningRegistration::findByEventIdWithGender(1,"female"));
 	// echo "<pre>";
 	// print_r($rowEventCompetition[0]);
 	// echo "</pre>";
@@ -42,24 +44,24 @@
 				<div class="page-content">
 					<div class="page-header position-relative">
 						<h1>
-							Winners
+							Overall
 						</h1>
 					</div><!--/.page-header-->
 
 					<div class="row-fluid">
 								<h3 class="header smaller lighter blue"></h3>
-								Gender: <select class="form-control" name="sort_by">
+								<!-- Gender: <select class="form-control" name="sort_by">
 									<option <?php if($gender === "male") echo "selected"?> value="male">Male</option>
 									<option <?php if($gender === "female") echo "selected"?> value="female">Female</option>
 								</select>
-
-								Sort By: <select class="form-control" name="sort_by_competition">
+ -->
+<!-- 								Sort By: <select class="form-control" name="sort_by_competition">
 									<?php foreach ($rowCompetition as $key => $value):?>
 									<option <?php  if($competition_id == $value->competition_id) echo"selected"; ?> value="<?= $value->competition_id?>"><?= $value->competition_description?></option>									
 									<?php endforeach;?>
-								</select>
+								</select> -->
 								<div class="table-header clearfix">
-									Winners
+									Male Winners
 								</div>
 
 								<table id="table-competition" class="table table-striped table-bordered table-hover">
@@ -84,7 +86,7 @@
 									</thead>
 
 									<tbody>
-										<?php $a = 1;$grandTotal = 0; foreach ($rowContestant as $key => $value):?>
+										<?php $a = 1;$grandTotal = 0; foreach ($rowContestantMale as $key => $value):?>
 										<?php $grandTotal = 0;?>
 										<tr>
 											<td><?= $a++; ?></td>
@@ -106,7 +108,7 @@
 															echo $valueRow->total;
 															$grandTotal += $valueRow->total;
 															$rowTopFive[$a-2] = array(
-																"competition_id" => $valueRow->competition_id,
+																"competition_id" => 9,
 																"event_id" => $value->event_id,
 																"contestant_id" => $value->contestant_id,
 																"gender" => $value->gender,
@@ -122,28 +124,72 @@
 											<td><?= $grandTotal;?></td>
 										</tr>
 										<?php endforeach;?>
-										<?php
-										function array_sort_by_column(&$arr, $col, $dir = SORT_DESC) {
-										    $sort_col = array();
-										    foreach ($arr as $key=> $row) {
-										        $sort_col[$key] = $row[$col];
-										    }
+									</tbody>
+								</table>
+								<div class="table-header clearfix">
+									Female Winners
+								</div>
 
-										    array_multisort($sort_col, $dir, $arr);
-										}
+								<table id="table-competition" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Contestant No.</th>
+											<th>Last Name</th>
+											<th>First Name</th>
+											<th>Gender</th>
+											<th>Year</th>
+											<th>Section</th>
+											<?php foreach($rowCompetition as $key => $value):?>
+												<?php if( ucwords($value->competition_description) != ucwords("top five")):?>
+													<th><?= $value->competition_description;?></th>
+												<?php endif;?>
+											<?php endforeach;?>
+											<th>
+												grand-total
+											</th>
+										</tr>
+									</thead>
 
+									<tbody>
+										<?php $a = 1;$grandTotal = 0; foreach ($rowContestantFemale as $key => $value):?>
+										<?php $grandTotal = 0;?>
+										<tr>
+											<td><?= $a++; ?></td>
+											<td><?= $value->contestant_no; ?></td>
+											<td><?= $value->lastname; ?></td>
+											<td><?= $value->firstname; ?></td>
+											<td><?= $gender; ?></td>
+											<td><?= $value->year; ?></td>
+											<td><?= $value->section; ?></td>
+											
+											<?php foreach($rowCompetition as $keyComp => $valueComp):?>
+												<?php if( ucwords($valueComp->competition_description) != ucwords("top five")):?>
+												<td>
 
-										array_sort_by_column($rowTopFive, 'grandTotal');
-										$x = 0;
-										$countGender = json_decode(Filter::countGender(1,$gender));
-										// print_r($countGender);
-										if($countGender[0]->total > 0)
-											Filter::truncate();
-										while (5 > $x) {
-											Filter::add($rowTopFive[$x++]);
-										}
-										?>
+												<?php $row = json_decode(Scores::checkWinnersPerCategory($gender,$valueComp->competition_id)); ?>
+												<?php foreach($row as $keyRow => $valueRow):?>
+													<?php if($valueRow->competition_id == $valueComp->competition_id && $value->student_no == $valueRow->student_no){ 
 
+															echo $valueRow->total;
+															$grandTotal += $valueRow->total;
+															$rowTopFive[$a-2] = array(
+																"competition_id" => 9,
+																"event_id" => $value->event_id,
+																"contestant_id" => $value->contestant_id,
+																"gender" => $value->gender,
+																"grandTotal" => floatval($grandTotal),
+															);  
+														}
+
+													?>
+												<?php endforeach;?>
+												</td>
+												<?php endif;?>
+											<?php endforeach;?>
+											<td><?= $grandTotal;?></td>
+										</tr>
+										<?php endforeach;?>
 									</tbody>
 								</table>
 							</div>
@@ -182,3 +228,96 @@
 </script>
 	<?php endif;?>
 <?php endif;?>
+
+
+<?php
+	// $rowTopFive = array();
+	// $arr = array("male","female");
+	// $a = 1;
+	// $grandTotal = 0;
+	// Filter::truncate();
+	// foreach ($arr as $keyArr => $valueArr):
+	// 	$a = 1;
+	// 	$grandTotal = 0; 
+
+	// 	$rowContestant = json_decode(ScreeningRegistration::findByEventIdWithGender(1,$valueArr));
+	// 	foreach ($rowContestant as $key => $value):
+	// 		$grandTotal = 0;
+	// 		$a++; 
+
+	// 		foreach($rowCompetition as $keyComp => $valueComp):
+	// 		 if( ucwords($valueComp->competition_description) != ucwords("top five")):
+
+	// 			 $row = json_decode(Scores::checkWinnersPerCategory($valueArr,$valueComp->competition_id)); 
+	// 				// echo "<pre>";
+	// 				// print_r($row);
+	// 				// echo "</pre>";
+
+	// 			 foreach($row as $keyRow => $valueRow):
+	// 				 if($valueRow->competition_id == $valueComp->competition_id && $value->student_no == $valueRow->student_no){ 
+
+	// 						$grandTotal += $valueRow->total;
+	// 						$rowTopFive[$a-2] = array(
+	// 							"competition_id" => 9,
+	// 							"event_id" => $value->event_id,
+	// 							"contestant_id" => $value->contestant_id,
+	// 							"gender" => $value->gender,
+	// 							"grandTotal" => floatval($grandTotal),
+	// 							"contestant_no" => intval(Helpers::random_str()),
+	// 							"already" => $value->already,
+	// 						);  
+	// 					}
+
+					
+	// 			 endforeach;
+	// 		 endif;
+	// 		endforeach;
+
+	// 	endforeach;
+
+	// 	Helpers::array_sort_by_column($rowTopFive, 'grandTotal');
+	// 	Helpers::array_sort_by_column($rowTopFive, 'already');
+	// 	$x = 0;
+	// 	while (5 > $x) {
+	// 		Filter::add($rowTopFive[$x++]);
+	// 	}
+	// 	// print_r($rowTopFive);
+	// 	// $rowTopFive = array();
+	// endforeach;
+
+?>
+
+
+
+
+
+ <!-- $a = 1;$grandTotal = 0; foreach ($rowContestant as $key => $value):
+ $grandTotal = 0;
+	$a++; 
+	
+	 foreach($rowCompetition as $keyComp => $valueComp):
+		 if( ucwords($valueComp->competition_description) != ucwords("top five")):
+		
+
+		 $row = json_decode(Scores::checkWinnersPerCategory($gender,$valueComp->competition_id)); 
+		 foreach($row as $keyRow => $valueRow):
+			 if($valueRow->competition_id == $valueComp->competition_id && $value->student_no == $valueRow->student_no){ 
+
+					echo $valueRow->total;
+					$grandTotal += $valueRow->total;
+					$rowTopFive[$a-2] = array(
+						"competition_id" => 9,
+						"event_id" => $value->event_id,
+						"contestant_id" => $value->contestant_id,
+						"gender" => $value->gender,
+						"grandTotal" => floatval($grandTotal),
+					);  
+				}
+
+			
+		 endforeach;
+		 endif;
+	 endforeach;
+	$grandTotal;
+
+ endforeach; -->

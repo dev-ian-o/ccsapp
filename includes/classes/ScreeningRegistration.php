@@ -137,11 +137,14 @@ class ScreeningRegistration{
 			
 	}
 
-	public static function findByEventIdWithGender($id,$gender){
+	public static function findByEventIdWithGender($id,$gender,$filter=false){
 
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE event_id = :id AND gender LIKE :gender AND deleted_at IS NULL ORDER BY contestant_no ASC");
+		if($filter == false)
+			$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE event_id = :id AND gender LIKE :gender AND deleted_at IS NULL ORDER BY contestant_no ASC");
+		else
+			$stmt = $conn->prepare("SELECT *,a.contestant_no as contestant_no FROM tbl_contestant a,tbl_filter b WHERE a.event_id = :id AND a.gender = :gender AND a.contestant_id = b.contestant_id AND a.deleted_at IS NULL ORDER BY b.contestant_no ASC");
 
 		$stmt->execute(array(
 			"id" => $id,
@@ -154,11 +157,14 @@ class ScreeningRegistration{
 			
 	}
 
-	public static function findByNext($row){
+	public static function findByNext($row,$filter=false){
 		$val = $row;
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE event_id = :event_id AND gender = :gender AND deleted_at IS NULL ORDER BY contestant_no ASC");
+		if($filter == false)
+			$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE event_id = :event_id AND gender = :gender AND deleted_at IS NULL ORDER BY contestant_no ASC");
+		else
+			$stmt = $conn->prepare("SELECT *,a.contestant_no as contestant_no FROM tbl_contestant a,tbl_filter b WHERE a.event_id = :event_id AND a.gender = :gender AND a.contestant_id = b.contestant_id AND a.deleted_at IS NULL ORDER BY b.contestant_no ASC");
 
 		$stmt->execute(array(
 			"event_id" => $row['event_id'],
@@ -182,11 +188,14 @@ class ScreeningRegistration{
 	}
 
 
-	public static function findByPrev($row){
+	public static function findByPrev($row,$filter=false){
 		$val = $row;
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE event_id = :event_id AND gender = :gender AND deleted_at IS NULL ORDER BY contestant_no ASC");
+		if($filter == false)
+			$stmt = $conn->prepare("SELECT * FROM tbl_contestant WHERE event_id = :event_id AND gender = :gender AND deleted_at IS NULL ORDER BY contestant_no ASC");
+		else
+			$stmt = $conn->prepare("SELECT *,a.contestant_no as contestant_no FROM tbl_contestant a,tbl_filter b WHERE a.event_id = :event_id AND a.gender = :gender AND a.contestant_id = b.contestant_id AND a.deleted_at IS NULL ORDER BY b.contestant_no ASC");
 
 		$stmt->execute(array(
 			"event_id" => $row['event_id'],

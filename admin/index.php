@@ -1,5 +1,5 @@
 <?php include("common/header.php"); ?>
-	<body class="login-layout">
+	<!-- <body class="login-layout">
 		<div class="main-container container-fluid">
 			<div class="main-content">
 				<div class="row-fluid">
@@ -64,7 +64,7 @@
 					</div><!--/.span-->
 				</div><!--/.row-fluid-->
 			</div>
-		</div><!--/.main-container-->
+		</div><!--/.main-container--> -->
 
 <?php include 'common/footer.php';?>
 		<!--inline scripts related to this page-->

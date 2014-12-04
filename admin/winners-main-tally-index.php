@@ -39,10 +39,10 @@
 
 					<div class="row-fluid">
 								<h3 class="header smaller lighter blue"></h3>
-								Gender: <select class="form-control" name="sort_by">
+<!-- 								Gender: <select class="form-control" name="sort_by">
 									<option <?php if($gender === "male") echo "selected"?> value="male">Male</option>
 									<option <?php if($gender === "female") echo "selected"?> value="female">Female</option>
-								</select>
+								</select> -->
 
 								Sort By: <select class="form-control" name="sort_by_competition">
 									<?php foreach ($rowCompetition as $key => $value):?>

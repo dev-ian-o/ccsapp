@@ -33,14 +33,15 @@ class Filter{
 
 		$conn = static::connect();
 
-		$stmt = $conn->prepare("INSERT INTO `tbl_filter`(`event_id`, `competition_id`, `contestant_id`, `gender`, `created_at`) 
-					VALUES(:event_id,:competition_id,:contestant_id, :gender, now())");
+		$stmt = $conn->prepare("INSERT INTO `tbl_filter`(`event_id`, `competition_id`, `contestant_id`, `gender`, `contestant_no`, `created_at`) 
+					VALUES(:event_id,:competition_id,:contestant_id, :gender, :contestant_no, now())");
 
 		$stmt->execute(array(
 			"event_id" => $row['event_id'],
 			"competition_id" => $row['competition_id'],
 			"contestant_id" => $row['contestant_id'],
 			"gender" => $row['gender'],
+			"contestant_no" => $row['contestant_no'],
 		));
 		
 		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		

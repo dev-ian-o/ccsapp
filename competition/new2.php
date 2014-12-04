@@ -1,14 +1,8 @@
 <link href="../lib/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
 <?php  session_start();?>
-
+<?php if(!isset($_SESSION['competition_id']))echo "<script>alert('Login first');location.href='login-judge.php';</script>"; ?>
 <?php if(!isset($_SESSION['event_id']))echo "<script>alert('Login first');location.href='login-judge.php';</script>"; ?>
 <?php if(!isset($_SESSION['judges_id']))echo "<script>location.href='login-judge.php';</script>"; ?>
-<?php 
-    if(isset($_GET['id']))
-        $competition_id = $_GET['id'];
-    else
-        $competition_id = 1;
-?>
 <?php include('common/header.php');?>
 <?php include('../includes/classes/Criteria.php');?>
 <?php include('../includes/classes/ScreeningRegistration.php');?>
@@ -17,34 +11,27 @@
 <?php include('../includes/classes/competition.php');?>
 <?php $contestantsMale = json_decode(ScreeningRegistration::findByEventIdWithGender($_SESSION['event_id'],"male"));?>
 <?php $contestantsFemale = json_decode(ScreeningRegistration::findByEventIdWithGender($_SESSION['event_id'],"female"));?>
-<?php $rowCriteria = json_decode(Criteria::findByCompetitionId($competition_id));?>
+<?php $rowCriteria = json_decode(Criteria::findByCompetitionId($_SESSION['competition_id']));?>
 <?php $rowScoresMale = json_decode(Scores::findByRows(array(
   "student_no" => $contestantsMale[0]->student_no,
-  "competition_id" => $competition_id,
+  "competition_id" => $_SESSION['competition_id'],
   "judges_id" => $_SESSION['judges_id'],
 )));?>
 <?php $rowScoresFemale = json_decode(Scores::findByRows(array(
   "student_no" => $contestantsFemale[0]->student_no,
-  "competition_id" => $competition_id,
+  "competition_id" => $_SESSION['competition_id'],
   "judges_id" => $_SESSION['judges_id'],
 )));?>
 <?php
 if($rowScoresMale) $scoresMale = json_decode($rowScoresMale[0]->score); 
 if($rowScoresFemale) $scoresFemale = json_decode($rowScoresMale[0]->score);
 
-$rowCompetition = json_decode(Competition::findById($competition_id));
-$rowComp = json_decode(Competition::fetch());
+$rowCompetition = json_decode(Competition::findById($_SESSION['competition_id']));
 ?>
 
   <div class="container">
       <!-- <div style="height: 30px;"><input type="checkbox" class="switch-gender" name="gender" checked value="Mr" data-on-text="Mr" data-off-text="Ms"></div> -->
-      <!-- <h1><?= ucwords($rowCompetition[0]->competition_name)?></h1> -->
-                  <select name="competition_sort" style="font-size: 30px;">
-                    <?php foreach ($rowComp as $key => $value):?>
-                    <option <?php  if($competition_id == $value->competition_id) echo"selected"; ?> value="<?= $value->competition_id?>"><?= $value->competition_description?></option>                 
-                    <?php endforeach;?>
-                  </select>
-
+      <h1><?= ucwords($rowCompetition[0]->competition_name)?></h1>
       <div class="clearfix">
         <span class="pull-right">JUDGE: <?= $_SESSION['judge_name'];?></span>
       </div>
@@ -58,7 +45,7 @@ $rowComp = json_decode(Competition::fetch());
       <div class="row">
         <div class="center col-xs-6 mr-div" style="border-right:4px solid">
             <div class="text-center">
-              <h3 style="color:#428bca;">MR. CCS</h3>
+              <h3>MALE</h3>
             </div><br>
             <img style="height: 175px;"image-contestant src="<?php if($contestantsMale[0]->image == '1') echo '../images/male_default.svg'; else echo "../images/".$contestantsMale[0]->image;?>" alt="..." class="img-circle img-thumbnail">
               <!-- <div class="contestant-no" style="position: absolute;font-size: 40px;right: 50px;">#<span><?= $contestantsMale[0]->contestant_no;?></span></div> -->
@@ -79,7 +66,7 @@ $rowComp = json_decode(Competition::fetch());
             <form method="post" class="male-form">
               <input type="hidden" name="gender" value="<?= $contestantsMale[0]->gender; ?>">
               <input type="hidden" name="student_no" value="<?= $contestantsMale[0]->student_no; ?>">
-              <input type="hidden" name="competition_id" value="<?= $competition_id; ?>">
+              <input type="hidden" name="competition_id" value="<?= $_SESSION['competition_id']; ?>">
               <input type="hidden" name="contestant_id" value="<?= $contestantsMale[0]->contestant_id; ?>">
               <input type="hidden" name="event_id" value="<?= $contestantsMale[0]->event_id; ?>">
               <input type="hidden" name="scores_id" value="">
@@ -125,7 +112,7 @@ $rowComp = json_decode(Competition::fetch());
             <!-- <img src="../images/female_default.svg" alt="..." class="img-circle img-thumbnail"> -->
 
             <div class="text-center">
-              <h3 style="color:#d9534f";>MS. CCS</h3>
+              <h3>FEMALE</h3>
             </div><br>
             <img style="height: 175px;" image-contestant src="<?php if($contestantsFemale[0]->image == '1') echo '../images/female_default.svg'; else echo "../images/".$contestantsFemale[0]->image;?>" alt="..." class="img-circle img-thumbnail">
               <!-- <div class="contestant-no" style="position: absolute;font-size: 40px;right: 50px;">#<span><?= $contestantsFemale[0]->contestant_no;?></span></div> -->
@@ -138,7 +125,7 @@ $rowComp = json_decode(Competition::fetch());
               <div style="position: absolute;font-size: 40px;right: 20px; top:80;">#</div>
 
               <div>
-                <button type="button" class="btn btn-danger mT10 btn-sm names">
+                <button type="button" class="btn btn-primary mT10 btn-sm names">
                   <?= ucwords($contestantsFemale[0]->lastname) .', '. ucwords($contestantsFemale[0]->firstname); ?>  <br>
                   <?= ucwords($contestantsFemale[0]->year) .'-'. $contestantsFemale[0]->section; ?>  
                 </button>
@@ -147,7 +134,7 @@ $rowComp = json_decode(Competition::fetch());
             <form method="post" class="female-form">
               <input type="hidden" name="gender" value="<?= $contestantsFemale[0]->gender; ?>">
               <input type="hidden" name="student_no" value="<?= $contestantsFemale[0]->student_no; ?>">
-              <input type="hidden" name="competition_id" value="<?= $competition_id; ?>">
+              <input type="hidden" name="competition_id" value="<?= $_SESSION['competition_id']; ?>">
               <input type="hidden" name="contestant_id" value="<?= $contestantsFemale[0]->contestant_id; ?>">
               <input type="hidden" name="event_id" value="<?= $contestantsFemale[0]->event_id; ?>">
               <input type="hidden" name="scores_id" value="">
@@ -573,16 +560,3 @@ $rowComp = json_decode(Competition::fetch());
 
 </script>
 
-
-<script type="text/javascript">
-  $(function() {
-    $('[name=competition_sort]').on('input', function(){
-      console.log(this);       
-        if($('[name=competition_sort]').val() != 9 )
-          location.href = "<?= $_SERVER['PHP_SELF'] ?>" + "?id=" +  $('[name=competition_sort]').val();
-        else
-          location.href = "top-five.php?let-me-in=ianolinares&id=" +  $('[name=competition_sort]').val();
-
-    });
-  });
-</script>

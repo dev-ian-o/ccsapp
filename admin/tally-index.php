@@ -16,7 +16,8 @@
 	else
 		$competition_id = "1";
 
-	$row = json_decode(Scores::checkTally($gender,$competition_id));
+	$rowMale = json_decode(Scores::checkTally("male",$competition_id));
+	$rowFemale = json_decode(Scores::checkTally("female",$competition_id));
 ?>
 	<body>
 		<?php include 'common/nav.php';?>
@@ -39,10 +40,10 @@
 
 					<div class="row-fluid">
 								<h3 class="header smaller lighter blue"></h3>
-								Gender: <select class="form-control" name="sort_by">
+								<!-- Gender: <select class="form-control" name="sort_by">
 									<option <?php if($gender === "male") echo "selected"?> value="male">Male</option>
 									<option <?php if($gender === "female") echo "selected"?> value="female">Female</option>
-								</select>
+								</select> -->
 
 								Sort By: <select class="form-control" name="sort_by_competition">
 									<?php foreach ($rowCompetition as $key => $value):?>
@@ -50,7 +51,7 @@
 									<?php endforeach;?>
 								</select>
 								<div class="table-header clearfix">
-									Tally
+									Male Tally
 								</div>
 
 								<table id="table-competition" class="table table-striped table-bordered table-hover">
@@ -58,8 +59,8 @@
 										<tr>
 											<th>#</th>
 											<th>ID No.</th>
-											<th>Contestant No.</th>
 											<th>Judge Name.</th>
+											<th>Contestant No.</th>
 											<th>Last Name</th>
 											<th>First Name</th>
 											<th>Gender</th>
@@ -71,7 +72,47 @@
 									</thead>
 
 									<tbody>
-										<?php $a = 1; foreach ($row as $key => $value):?>
+										<?php $a = 1; foreach ($rowMale as $key => $value):?>
+										<tr>
+											<td><?= $a++; ?></td>
+											<td><?= $value->student_no; ?></td>
+											<td><?= $value->name; ?></td>
+											<td><?= $value->contestant_no; ?></td>
+											<td><?= $value->lastname; ?></td>
+											<td><?= $value->firstname; ?></td>
+											<td><?= $gender; ?></td>
+											<td><?= $value->year; ?></td>
+											<td><?= $value->section; ?></td>
+											<td><?= $value->score; ?></td>
+											<td><?= $value->total_score; ?></td>
+										</tr>
+										<?php endforeach;?>
+
+									</tbody>
+								</table>
+								<div class="table-header clearfix">
+									Female Tally
+								</div>
+
+								<table id="table-competition" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>ID No.</th>
+											<th>Judge Name.</th>
+											<th>Contestant No.</th>
+											<th>Last Name</th>
+											<th>First Name</th>
+											<th>Gender</th>
+											<th>Year</th>
+											<th>Section</th>
+											<th>Scores</th>
+											<th>total</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<?php $a = 1; foreach ($rowFemale as $key => $value):?>
 										<tr>
 											<td><?= $a++; ?></td>
 											<td><?= $value->student_no; ?></td>
@@ -119,7 +160,7 @@
   $(function() {
     $('[name=sort_by_competition]').on('input', function(){
     	console.log(this);       
-        location.href = "<?= $_SERVER['PHP_SELF'] ?>" + "?id=" +  $('[name=sort_by_competition]').val()+"&let-me-in=ianolinares";
+        location.href = "<?= $_SERVER['PHP_SELF'] ?>" + "?id_competition=" +  $('[name=sort_by_competition]').val()+"&let-me-in=ianolinares";
     });
   });
 </script>
