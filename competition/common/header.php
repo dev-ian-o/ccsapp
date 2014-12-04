@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=yes;" /> -->
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -13,7 +14,16 @@
     <link href="../lib/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="../lib/fonts/css/font-awesome.min.css">
     <style type="text/css">
-
+      .no-sign-hash{
+        position: absolute;
+        font-size: 40px;
+        left:0px;
+        top:230px;
+      }
+      body{
+        /*background-color: #FFF!important; */
+        color: #000!important;
+      }
       .loader{
             font-size: 30px;
             position: fixed;
@@ -46,10 +56,23 @@
         -webkit-animation-name: rotateIn;
         animation-name: rotateIn;
       }
+      .contestant-no-select {
+        top:205px;
+        width:95px;
+        position: absolute;
+        display:initial;
+        font-size: 40px;
+        left: 10px;
+        height:65px;
+        overflow: visible!important;
+      }
       input[type="checkbox"] {
           -webkit-appearance: checkbox !important;
           width: 20px;
           height: 20px;
+        }
+        option{
+          height: 65px;
         }
         .center{
             text-align: center;
@@ -105,12 +128,12 @@
         input[data-criteria], #talent-input, #presentation-input, #talent-input2, #presentation-input2{
           text-align: center;
           font-family: "Quantico", sans-serif;
-          font-size: 14px;
-          display: block;
-          margin: auto;
-          padding: 10px 0px;
+          /*font-size: 14px;*/
+          /*display: block;*/
+          /*margin: auto;*/
+          /*padding: 10px 0px;*/
           width: 100%;
-          color: #579e81;
+          /*color: #579e81;*/
         }
         .over-time{ font-size: 20px; color: #FC6D98;}
         .mL40{ margin-left: 40px;}

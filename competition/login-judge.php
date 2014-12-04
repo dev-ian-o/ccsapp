@@ -55,7 +55,13 @@
       // $_SESSION['competition_id'] = $_POST['competition_id'];
       $_SESSION['judge_name'] = $judge[0]->name;
       if($judge[0]->judges_id)
-        echo "<script>location.href = 'new.php?".$_POST['competition_id']."';</script>";
+      {
+        if($_POST['competition_id'] != 9)
+          echo "<script>location.href = 'new.php?id=".$_POST['competition_id']."';</script>";
+        else
+          echo "<script>location.href = 'top-five.php?let-me-in=ianolinares&id=".$_POST['competition_id']."';</script>";
+
+      }
 
         // echo "<script>location.href = 'new.php?id="+$_POST['competition_id']+"';</script>";
     }

@@ -1,4 +1,4 @@
-<link href="../lib/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+  <link href="../lib/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
 <?php  session_start();?>
 
 <?php if(!isset($_SESSION['event_id']))echo "<script>alert('Login first');location.href='login-judge.php';</script>"; ?>
@@ -38,10 +38,12 @@ $rowComp = json_decode(Competition::fetch());
 
   <div class="container">
       <!-- <div style="height: 30px;"><input type="checkbox" class="switch-gender" name="gender" checked value="Mr" data-on-text="Mr" data-off-text="Ms"></div> -->
-      <!-- <h1><?= ucwords($rowCompetition[0]->competition_name)?></h1> -->
-                  <select name="competition_sort" style="font-size: 30px;">
+      <!-- <h1><?= strtoupper($rowCompetition[0]->competition_name)?></h1> -->
+                  <select name="competition_sort" class="form-control" style="font-size: 30px;height:50px;overflow: visible!important;">
                     <?php foreach ($rowComp as $key => $value):?>
-                    <option <?php  if($competition_id == $value->competition_id) echo"selected"; ?> value="<?= $value->competition_id?>"><?= $value->competition_description?></option>                 
+                      <?php if($value->competition_id != 1):?>
+                      <option <?php  if($competition_id == $value->competition_id) echo"selected"; ?> value="<?= $value->competition_id?>"><?= $value->competition_description?></option>                 
+                      <?php endif;?>
                     <?php endforeach;?>
                   </select>
 
@@ -51,8 +53,8 @@ $rowComp = json_decode(Competition::fetch());
 
         <div class="clearfix">
           <div class="all-options">
-            <button class="btn btn-primary btn-sm pull-right next">Next <i class="fa fa-arrow-right"></i></button>
-            <button class="btn btn-primary btn-sm pull-left previous"><i class="fa fa-arrow-left"></i> Previous</button>
+            <button class="btn btn-default btn-sm pull-right next">Next <i class="fa fa-arrow-right"></i></button>
+            <button class="btn btn-default btn-sm pull-left previous"><i class="fa fa-arrow-left"></i> Previous</button>
           </div>
         </div>
       <div class="row">
@@ -62,17 +64,17 @@ $rowComp = json_decode(Competition::fetch());
             </div><br>
             <img style="height: 175px;"image-contestant src="<?php if($contestantsMale[0]->image == '1') echo '../images/male_default.svg'; else echo "../images/".$contestantsMale[0]->image;?>" alt="..." class="img-circle img-thumbnail">
               <!-- <div class="contestant-no" style="position: absolute;font-size: 40px;right: 50px;">#<span><?= $contestantsMale[0]->contestant_no;?></span></div> -->
-              <select class="contestant-no-select" style="position: absolute;font-size: 40px;right: 50px;">
-                  contestantsMale
+              <select class="contestant-no-select form-control" style="">
+                  
                   <?php foreach ($contestantsMale as $key => $value):?>  
                     <option value="<?= $value->contestant_id;?>"><?= $value->contestant_no;?></option>
                   <?php endforeach;?>
               </select>
-              <div style="position: absolute;font-size: 40px;right: 20px; top:80;">#</div>
+              <div class="no-sign-hash">#</div>
               <div>
                 <button type="button" class="btn btn-primary mT10 btn-sm names">
-                  <?= ucwords($contestantsMale[0]->lastname) .', '. ucwords($contestantsMale[0]->firstname); ?>  <br>
-                  <?= ucwords($contestantsMale[0]->year) .'-'. $contestantsMale[0]->section; ?>  
+                  <?= strtoupper($contestantsMale[0]->firstname).' '.strtoupper($contestantsMale[0]->lastname); ?>  <br>
+                  <?= strtoupper($contestantsMale[0]->year) .'-'. $contestantsMale[0]->section; ?>  
                 </button>
               </div>
               <br>
@@ -108,15 +110,15 @@ $rowComp = json_decode(Competition::fetch());
               <span class="label label-success total-score"><?php if($rowScoresMale) echo $rowScoresMale[0]->total_score; 
               else echo "0";?>%</span>
               <input id="total2" type="hidden" value="<?php if($rowScoresMale) echo $rowScoresMale[0]->total_score; 
-              else echo "0";?>" name="total_score" class="mT10"><br><br>
+              else echo "0";?>" name="total_score" class="mT10 form-control input-lg"><br><br>
 
-              <input type="submit" name="submit" class="btn btn-danger btn-sm" value="SAVE">
+              <input type="submit" name="submit" class="btn btn-success btn-sm" value="SAVE">
             </form>
 
             <div class="clearfix">
               <div class="male-options">
-                <button class="btn btn-primary btn-sm pull-right next">Next</button>
-                <button class="btn btn-primary btn-sm pull-left previous">Previous</button>
+                <button class="btn btn-default btn-sm pull-right next">Next</button>
+                <button class="btn btn-default btn-sm pull-left previous">Previous</button>
               </div>
             </div>
         </div>
@@ -129,18 +131,20 @@ $rowComp = json_decode(Competition::fetch());
             </div><br>
             <img style="height: 175px;" image-contestant src="<?php if($contestantsFemale[0]->image == '1') echo '../images/female_default.svg'; else echo "../images/".$contestantsFemale[0]->image;?>" alt="..." class="img-circle img-thumbnail">
               <!-- <div class="contestant-no" style="position: absolute;font-size: 40px;right: 50px;">#<span><?= $contestantsFemale[0]->contestant_no;?></span></div> -->
-              <select class="contestant-no-select" style="position: absolute;font-size: 40px;right: 50px;">
+              
+              <select class="contestant-no-select form-control" style="top:205px;width:95px;position: absolute;display:initial;font-size: 40px;left: 10px;height:65px;overflow: visible!important;">
                   
                   <?php foreach ($contestantsFemale as $key => $value):?>  
                     <option value="<?= $value->contestant_id;?>"><?= $value->contestant_no;?></option>
                   <?php endforeach;?>
               </select>
-              <div style="position: absolute;font-size: 40px;right: 20px; top:80;">#</div>
+              
+              <div class="no-sign-hash">#</div>
 
               <div>
                 <button type="button" class="btn btn-danger mT10 btn-sm names">
-                  <?= ucwords($contestantsFemale[0]->lastname) .', '. ucwords($contestantsFemale[0]->firstname); ?>  <br>
-                  <?= ucwords($contestantsFemale[0]->year) .'-'. $contestantsFemale[0]->section; ?>  
+                  <?= strtoupper($contestantsFemale[0]->firstname).' '.strtoupper($contestantsFemale[0]->lastname); ?>  <br>
+                  <?= strtoupper($contestantsFemale[0]->year) .'-'. $contestantsFemale[0]->section; ?>  
                 </button>
               </div>
               <br>
@@ -176,15 +180,15 @@ $rowComp = json_decode(Competition::fetch());
               <span class="label label-success total-score"><?php if($rowScoresFemale) echo $rowScoresFemale[0]->total_score; 
               else echo "0";?>%</span>
               <input id="total2" type="hidden" value="<?php if($rowScoresFemale) echo $rowScoresFemale[0]->total_score; 
-              else echo "0";?>" name="total_score" class="mT10"><br><br>
+              else echo "0";?>" name="total_score" class="mT10 form-control input-lg"><br><br>
 
-              <input type="submit" name="submit" class="btn btn-danger btn-sm" value="SAVE">
+              <input type="submit" name="submit" class="btn btn-success btn-sm" value="SAVE">
             </form>
 
             <div class="clearfix">
               <div class="female-options">
-                <button class="btn btn-primary btn-sm pull-right next">Next</button>
-                <button class="btn btn-primary btn-sm pull-left previous">Previous</button>
+                <button class="btn btn-default btn-sm pull-right next">Next</button>
+                <button class="btn btn-default btn-sm pull-left previous">Previous</button>
               </div>
             </div>
         </div>
@@ -484,7 +488,7 @@ $rowComp = json_decode(Competition::fetch());
         submitFormFemale();
       });
 
-      $(".mr-div").find('.contestant-no-select').on('input',function(){
+      $(".mr-div").find('.contestant-no-select').on('change',function(){
           arr = {};
           arr['contestant_id'] = this.value;
           arr['competition_id'] = $(".mr-div").find("[name=competition_id]").val();
@@ -524,7 +528,7 @@ $rowComp = json_decode(Competition::fetch());
             });
 
       });
-      $(".ms-div").find('.contestant-no-select').on('input',function(){
+      $(".ms-div").find('.contestant-no-select').on('change',function(){
           arr = {};
           arr['contestant_id'] = this.value;
           arr['competition_id'] = $(".ms-div").find("[name=competition_id]").val();
@@ -576,7 +580,7 @@ $rowComp = json_decode(Competition::fetch());
 
 <script type="text/javascript">
   $(function() {
-    $('[name=competition_sort]').on('input', function(){
+    $('[name=competition_sort]').on('change', function(){
       console.log(this);       
         if($('[name=competition_sort]').val() != 9 )
           location.href = "<?= $_SERVER['PHP_SELF'] ?>" + "?id=" +  $('[name=competition_sort]').val();

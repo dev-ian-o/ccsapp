@@ -37,7 +37,7 @@
             </div>
           </div>
           <div class="control-group">
-            <label class="control-label" for="total_percentage">total_Percentage</label>
+            <label class="control-label" for="total_percentage">Total Percentage</label>
 
             <div class="controls">
               <input class="span5" type="text" name="total_percentage" id="total_percentage" placeholder="Percentage">
