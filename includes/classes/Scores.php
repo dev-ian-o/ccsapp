@@ -177,7 +177,7 @@ class Scores{
 
 		if(!$competition_id) $competition_id = 1;
 
-		$stmt = $conn->prepare("SELECT contestant_no,c.name,b.student_no,lastname,firstname,year,section,course,score,total_score 
+		$stmt = $conn->prepare("SELECT gender,contestant_no,c.name,b.student_no,lastname,firstname,year,section,course,score,total_score 
 		FROM tbl_scores a, tbl_contestant b, tbl_judges c 
 		WHERE b.gender = :gender AND a.judges_id = c.judges_id AND a.student_no = b.student_no AND a.competition_id = :competition_id 
 		ORDER BY contestant_no,c.judges_id ASC");
@@ -191,6 +191,29 @@ class Scores{
 
 		return json_encode($row);
 	}
+
+	public static function checkTallyJudges($gender,$competition_id,$judges_id){
+		$conn = static::connect();
+
+		if(!$competition_id) $competition_id = 1;
+
+		$stmt = $conn->prepare("SELECT gender,b.contestant_no,b.student_no,b.lastname,b.firstname,b.year,b.section,b.course,a.score,a.total_score 
+		FROM tbl_scores a, tbl_contestant b
+		WHERE b.gender = :gender AND a.judges_id = :judges_id AND b.student_no= a.student_no AND a.competition_id = :competition_id 
+		ORDER BY b.contestant_no ASC");
+
+		$stmt->execute(array(
+			"gender" => $gender,
+			"competition_id" => $competition_id,
+			"judges_id" => $judges_id,
+		));
+		
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+
+		return json_encode($row);
+	}
+
+
 
 
 }

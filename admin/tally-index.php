@@ -80,7 +80,7 @@
 											<td><?= $value->contestant_no; ?></td>
 											<td><?= $value->lastname; ?></td>
 											<td><?= $value->firstname; ?></td>
-											<td><?= $gender; ?></td>
+											<td><?= $value->gender; ?></td>
 											<td><?= $value->year; ?></td>
 											<td><?= $value->section; ?></td>
 											<td><?= $value->score; ?></td>
@@ -120,7 +120,7 @@
 											<td><?= $value->contestant_no; ?></td>
 											<td><?= $value->lastname; ?></td>
 											<td><?= $value->firstname; ?></td>
-											<td><?= $gender; ?></td>
+											<td><?= $value->gender; ?></td>
 											<td><?= $value->year; ?></td>
 											<td><?= $value->section; ?></td>
 											<td><?= $value->score; ?></td>

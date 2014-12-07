@@ -51,6 +51,12 @@
 
 							<b class="arrow icon-angle-down"></b>
 						</a>
+						<a href="print-index.php?let-me-in=ianolinares" class="dropdown-toggle">
+							<i class="icon-desktop"></i>
+							<span class="menu-text"> Print </span>
+
+							<b class="arrow icon-angle-down"></b>
+						</a>
 <!-- 
 						<ul class="submenu">
 							<li>
