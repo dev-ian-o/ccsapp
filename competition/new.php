@@ -53,8 +53,8 @@ $rowComp = json_decode(Competition::fetch());
 
         <div class="clearfix">
           <div class="all-options">
-            <button class="btn btn-default btn-sm pull-right next">Next <i class="fa fa-arrow-right"></i></button>
-            <button class="btn btn-default btn-sm pull-left previous"><i class="fa fa-arrow-left"></i> Previous</button>
+            <button class="btn btn-default btn-sm pull-right next">Next <i class="fa fa-fast-forward"></i></button>
+            <button class="btn btn-default btn-sm pull-left previous"><i class="fa fa-fast-backward"></i> Previous</button>
           </div>
         </div>
       <div class="row">
@@ -117,8 +117,8 @@ $rowComp = json_decode(Competition::fetch());
 
             <div class="clearfix">
               <div class="male-options">
-                <button class="btn btn-default btn-sm pull-right next">Next</button>
-                <button class="btn btn-default btn-sm pull-left previous">Previous</button>
+                <button class="btn btn-default btn-sm pull-right next">Next <i class="fa fa-step-forward"></i></button>
+                <button class="btn btn-default btn-sm pull-left previous"><i class="fa fa-step-backward"></i> Previous</button>
               </div>
             </div>
         </div>
@@ -132,7 +132,7 @@ $rowComp = json_decode(Competition::fetch());
             <img style="height: 175px;" image-contestant src="<?php if($contestantsFemale[0]->image == '1') echo '../images/female_default.svg'; else echo "../images/".$contestantsFemale[0]->image;?>" alt="..." class="img-circle img-thumbnail">
               <!-- <div class="contestant-no" style="position: absolute;font-size: 40px;right: 50px;">#<span><?= $contestantsFemale[0]->contestant_no;?></span></div> -->
               
-              <select class="contestant-no-select form-control" style="top:205px;width:95px;position: absolute;display:initial;font-size: 40px;left: 10px;height:65px;overflow: visible!important;">
+              <select class="contestant-no-select form-control" >
                   
                   <?php foreach ($contestantsFemale as $key => $value):?>  
                     <option value="<?= $value->contestant_id;?>"><?= $value->contestant_no;?></option>
@@ -187,8 +187,8 @@ $rowComp = json_decode(Competition::fetch());
 
             <div class="clearfix">
               <div class="female-options">
-                <button class="btn btn-default btn-sm pull-right next">Next</button>
-                <button class="btn btn-default btn-sm pull-left previous">Previous</button>
+                <button class="btn btn-default btn-sm pull-right next">Next <i class="fa fa-step-forward"></i></button>
+                <button class="btn btn-default btn-sm pull-left previous"><i class="fa fa-step-backward"></i> Previous</button>
               </div>
             </div>
         </div>
@@ -202,7 +202,7 @@ $rowComp = json_decode(Competition::fetch());
 <script type="text/javascript">
   $(function() {
     $('.male-form').find('[score]').on('keyup', function(e){
-      if(this.value > parseFloat(this.dataset.percentage)){
+      if((this.value > parseFloat(this.dataset.percentage)) && (this.value >= 1)){
         e.preventDefault();
         $(this).val("");
       };
@@ -211,7 +211,7 @@ $rowComp = json_decode(Competition::fetch());
         $el = $(this.parentElement.parentElement).find("[score]");
         totalScore = 0;
         console.log("this");
-        if(this.value <= parseFloat(this.dataset.percentage)){
+        if((this.value <= parseFloat(this.dataset.percentage)) && (this.value >= 1)){
           $($el).each(function() {
             if(this.value)
               totalScore += parseFloat(this.value);
@@ -231,7 +231,7 @@ $rowComp = json_decode(Competition::fetch());
 <script type="text/javascript">
   $(function() {
     $('.female-form').find('[score]').on('keyup', function(e){
-      if(this.value > parseFloat(this.dataset.percentage)){
+      if((this.value > parseFloat(this.dataset.percentage)) && (this.value >= 1)){
         e.preventDefault();
         $(this).val("");
       };
@@ -240,7 +240,7 @@ $rowComp = json_decode(Competition::fetch());
         $el = $(this.parentElement.parentElement).find("[score]");
         totalScore = 0;
         console.log("this");
-        if(this.value <= parseFloat(this.dataset.percentage)){
+        if((this.value <= parseFloat(this.dataset.percentage)) && (this.value >= 1)){
           $($el).each(function() {
             if(this.value)
               totalScore += parseFloat(this.value);

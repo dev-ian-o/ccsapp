@@ -5,7 +5,7 @@
 <?php
   
   session_start();
-  session_destroy();
+  if(isset($_SESSION)) session_destroy();
   $rowCompetition = json_decode(Competition::fetch());
   $rowEvent = json_decode(Events::fetch());
 ?>

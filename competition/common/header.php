@@ -18,7 +18,7 @@
         position: absolute;
         font-size: 40px;
         left:0px;
-        top:230px;
+        top:40px;
       }
       body{
         /*background-color: #FFF!important; */
@@ -57,7 +57,7 @@
         animation-name: rotateIn;
       }
       .contestant-no-select {
-        top:205px;
+        top:10px;
         width:95px;
         position: absolute;
         display:initial;

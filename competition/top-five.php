@@ -47,8 +47,8 @@ $rowCompetition = json_decode(Competition::findById($competition_id));
 
         <div class="clearfix">
           <div class="all-options">
-            <button class="btn btn-default btn-sm pull-right next">Next <i class="fa fa-arrow-right"></i></button>
-            <button class="btn btn-default btn-sm pull-left previous"><i class="fa fa-arrow-left"></i> Previous</button>
+            <button class="btn btn-default btn-sm pull-right next">Next <i class="fa fa-fast-forward"></i></button>
+            <button class="btn btn-default btn-sm pull-left previous"><i class="fa fa-fast-backward"></i> Previous</button>
           </div>
         </div>
       <div class="row">
@@ -111,8 +111,8 @@ $rowCompetition = json_decode(Competition::findById($competition_id));
 
             <div class="clearfix">
               <div class="male-options">
-                <button class="btn btn-default btn-sm pull-right next">Next</button>
-                <button class="btn btn-default btn-sm pull-left previous">Previous</button>
+                <button class="btn btn-default btn-sm pull-right next">Next <i class="fa fa-step-forward"></i></button>
+                <button class="btn btn-default btn-sm pull-left previous"><i class="fa fa-step-backward"></i> Previous</button>
               </div>
             </div>
         </div>
@@ -179,8 +179,8 @@ $rowCompetition = json_decode(Competition::findById($competition_id));
 
             <div class="clearfix">
               <div class="female-options">
-                <button class="btn btn-default btn-sm pull-right next">Next</button>
-                <button class="btn btn-default btn-sm pull-left previous">Previous</button>
+                <button class="btn btn-default btn-sm pull-right next">Next <i class="fa fa-step-forward"></i></button>
+                <button class="btn btn-default btn-sm pull-left previous"><i class="fa fa-step-backward"></i> Previous</button>
               </div>
             </div>
         </div>
@@ -194,7 +194,7 @@ $rowCompetition = json_decode(Competition::findById($competition_id));
 <script type="text/javascript">
   $(function() {
     $('.male-form').find('[score]').on('keyup', function(e){
-      if(this.value > parseFloat(this.dataset.percentage)){
+      if((this.value > parseFloat(this.dataset.percentage)) && (this.value >= 1)){
         e.preventDefault();
         $(this).val("");
       };
@@ -203,7 +203,7 @@ $rowCompetition = json_decode(Competition::findById($competition_id));
         $el = $(this.parentElement.parentElement).find("[score]");
         totalScore = 0;
         console.log("this");
-        if(this.value <= parseFloat(this.dataset.percentage)){
+        if((this.value <= parseFloat(this.dataset.percentage)) && (this.value >= 1)){
           $($el).each(function() {
             if(this.value)
               totalScore += parseFloat(this.value);
@@ -223,7 +223,7 @@ $rowCompetition = json_decode(Competition::findById($competition_id));
 <script type="text/javascript">
   $(function() {
     $('.female-form').find('[score]').on('keyup', function(e){
-      if(this.value > parseFloat(this.dataset.percentage)){
+      if((this.value > parseFloat(this.dataset.percentage)) && (this.value >= 1)){
         e.preventDefault();
         $(this).val("");
       };
@@ -232,7 +232,7 @@ $rowCompetition = json_decode(Competition::findById($competition_id));
         $el = $(this.parentElement.parentElement).find("[score]");
         totalScore = 0;
         console.log("this");
-        if(this.value <= parseFloat(this.dataset.percentage)){
+        if((this.value <= parseFloat(this.dataset.percentage)) && (this.value >= 1)){
           $($el).each(function() {
             if(this.value)
               totalScore += parseFloat(this.value);
