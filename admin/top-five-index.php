@@ -64,7 +64,7 @@
 									TOP FIVE male
 								</div>
 
-								<table id="table-competition" class="table table-striped table-bordered table-hover">
+								<table class="table-competition table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
 											<th>#</th>
@@ -96,7 +96,7 @@
 									TOP FIVE female
 								</div>
 
-								<table id="table-competition" class="table table-striped table-bordered table-hover">
+								<table class="table-competition table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
 											<th>#</th>
@@ -134,7 +134,7 @@
 <?php include 'common/footer.php'; ?>
 <script>
 	$(function() {
-		$('#table-competition').dataTable();
+		$('.table-competition').dataTable();
 	});
 </script>
 
@@ -164,6 +164,7 @@
 
 <?php
 		if(isset($_POST['submit'])){
+			$already = 0;
 			$rowTopFive = array();
 			$arr = array("male","female");
 			$a = 1;
@@ -189,7 +190,13 @@
 						 foreach($row as $keyRow => $valueRow):
 							 if($valueRow->competition_id == $valueComp->competition_id && $value->student_no == $valueRow->student_no){ 
 
+
 									$grandTotal += $valueRow->total;
+
+									if($value->already == 1)
+										$already = 10000000; 
+									else
+										$already = $grandTotal;
 									$rowTopFive[$a-2] = array(
 										"competition_id" => 9,
 										"event_id" => $value->event_id,
@@ -197,7 +204,7 @@
 										"gender" => $value->gender,
 										"grandTotal" => floatval($grandTotal),
 										"contestant_no" => intval(Helpers::random_str()),
-										"already" => $value->already,
+										"already" => $already,
 									);  
 								}
 
@@ -214,7 +221,9 @@
 				while (5 > $x) {
 					Filter::add($rowTopFive[$x++]);
 				}
+				// echo "<pre>";
 				// print_r($rowTopFive);
+				// echo "</pre>";
 				// $rowTopFive = array();
 			endforeach;
 

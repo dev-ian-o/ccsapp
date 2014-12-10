@@ -26,7 +26,7 @@
 	$rowContestantMale = json_decode(ScreeningRegistration::findByEventIdWithGender(1,"male"));
 	$rowContestantFemale = json_decode(ScreeningRegistration::findByEventIdWithGender(1,"female"));
 	// echo "<pre>";
-	// print_r($rowEventCompetition[0]);
+	// print_r($rowContestantFemale);
 	// echo "</pre>";
 ?>
 	<body>
@@ -64,7 +64,7 @@
 									Male Winners
 								</div>
 
-								<table id="table-competition" class="table table-striped table-bordered table-hover">
+								<table class="table-competition table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
 											<th>#</th>
@@ -101,7 +101,7 @@
 												<?php if( ucwords($valueComp->competition_description) != ucwords("top five")):?>
 												<td>
 
-												<?php $row = json_decode(Scores::checkWinnersPerCategory($gender,$valueComp->competition_id)); ?>
+												<?php $row = json_decode(Scores::checkWinnersPerCategory("male",$valueComp->competition_id)); ?>
 												<?php foreach($row as $keyRow => $valueRow):?>
 													<?php if($valueRow->competition_id == $valueComp->competition_id && $value->student_no == $valueRow->student_no){ 
 
@@ -130,7 +130,7 @@
 									Female Winners
 								</div>
 
-								<table id="table-competition" class="table table-striped table-bordered table-hover">
+								<table class="table-competition table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
 											<th>#</th>
@@ -151,6 +151,7 @@
 										</tr>
 									</thead>
 
+									
 									<tbody>
 										<?php $a = 1;$grandTotal = 0; foreach ($rowContestantFemale as $key => $value):?>
 										<?php $grandTotal = 0;?>
@@ -167,7 +168,7 @@
 												<?php if( ucwords($valueComp->competition_description) != ucwords("top five")):?>
 												<td>
 
-												<?php $row = json_decode(Scores::checkWinnersPerCategory($gender,$valueComp->competition_id)); ?>
+												<?php $row = json_decode(Scores::checkWinnersPerCategory("female",$valueComp->competition_id)); ?>
 												<?php foreach($row as $keyRow => $valueRow):?>
 													<?php if($valueRow->competition_id == $valueComp->competition_id && $value->student_no == $valueRow->student_no){ 
 
@@ -202,7 +203,7 @@
 <?php include 'common/footer.php'; ?>
 <script>
 	$(function() {
-		$('#table-competition').dataTable();
+		$('.table-competition').dataTable();
 	});
 </script>
 
